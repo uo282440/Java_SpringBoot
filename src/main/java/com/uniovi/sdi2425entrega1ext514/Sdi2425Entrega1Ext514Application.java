@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Sdi2425Entrega1Ext514Application {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(Sdi2425Entrega1Ext514Application.class, args);
 	}
 

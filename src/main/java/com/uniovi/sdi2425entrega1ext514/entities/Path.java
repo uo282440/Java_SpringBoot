@@ -7,13 +7,14 @@ import java.util.Objects;
 
 @Entity
 public class Path {
+
     @Id
     @GeneratedValue
-    private Long id;                    // Identificador unico
-    private LocalDateTime startDate;             // Fecha y hora de inicio
+    private Long id;
+    private LocalDateTime startDate;
     private double time;                // Tiempo del recorrido
-    private double initialOdometer;  // Kilometros antes del reccorido del recorrido
-    private Double finalOdometer;     // Kilometros despues del recorrido
+    private double initialOdometer;     // Kilometros antes del reccorido del recorrido
+    private Double finalOdometer;       // Kilometros despues del recorrido
     private String vehicleRegistration; // Matricula del coche
 
     private LocalDateTime endDate; //LocalDateTime  Date

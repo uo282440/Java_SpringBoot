@@ -35,8 +35,8 @@ public class Incidencia {
 
     public Incidencia() {}
 
-    public Incidencia (Long id, Vehicle vehicle, User user, String description, boolean requiresResponse,
-                       String response, String state) {
+    public Incidencia(Long id, Vehicle vehicle, User user, String description, boolean requiresResponse,
+                      String response, String state) {
 
         this.id = id;
         this.vehicle = vehicle;

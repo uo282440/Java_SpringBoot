@@ -1,0 +1,136 @@
+<!-- nav.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary"
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+    <a class="navbar-brand" href="#"></a>
+    <img src="/images/student-48.png" alt="logo"/>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+            aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="my-navbarColor02">
+
+        <ul class="navbar-nav mr-auto" sec:authorize="isAuthenticated()">
+            <li class="nav-item ">
+                <a class="nav-link" id="home" href="/home"><span th:text="#{Nav.home}"></span>
+                    <span class="sr-only">(current)</span></a>
+            </li>
+
+            <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
+                <a class="nav-link dropdown-toggle" href="#" id="gestionUsuarios" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" th:text="#{Nav.users.management}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/user/list" th:text="#{Nav.users.view}"></a>
+                    <a th:text="#{Nav.users.register}" class="dropdown-item" href="/user/register"></a>
+                </div>
+            </li>
+
+
+            <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')" >
+                <a class="nav-link dropdown-toggle" href="#" id="gestionVehiculos" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" th:text="#{Nav.vehicles.management}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/vehicle/list" th:text="#{Nav.vehicles.view}"></a>
+                    <a class="dropdown-item" href="/vehicle/register" th:text="#{Nav.vehicles.register}"></a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_STANDARD')" >
+                <a class="nav-link dropdown-toggle" href="#" id="trayectosPersonales" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" th:text="#{Nav.paths}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/path/start" th:text="#{Nav.paths.start}"></a>
+                    <a class="dropdown-item" href="/path/end" th:text="#{Nav.paths.end}">Finalizar</a>
+                    <a class="dropdown-item" href="/path/list" th:text="#{Nav.paths.view}">Ver historial</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown"  sec:authorize="hasRole('ROLE_STANDARD')" >
+                <a class="nav-link" id="vehicleFree" href="/vehicle/free" th:text="#{Nav.vehicles.free}">
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+
+            <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_STANDARD')" >
+                <a class="nav-link dropdown-toggle" href="#" id="repostajes" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" th:text="#{refuel.title}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/refuel/new">Repostar</a>
+                    <a class="dropdown-item" href="/refuel/list" >Ver historial</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_STANDARD')" >
+                <a class="nav-link dropdown-toggle" href="#" id="incidencias" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" th:text="Incidencias">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/incidencia/add">Registrar</a>
+                    <a class="dropdown-item" href="/incidencia/list" >Ver Incidencias</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown"  sec:authorize="hasRole('ROLE_ADMIN')" >
+                <a class="nav-link" id="listLogs" href="/user/logs" th:text="#{log.message}"></a>
+            </li>
+
+            <li class="nav-item dropdown"  sec:authorize="hasRole('ROLE_ADMIN')" >
+                <a class="nav-link" id="listIncidencias" href="/incidencia/listAdmin">Incidencias</a>
+            </li>
+
+            <li class="nav-item dropdown"  sec:authorize="hasRole('ROLE_ADMIN')" >
+                <a class="nav-link" id="editPaths" href="/path/listAdmin">Trayectos</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav justify-content-end">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="btnLanguage" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <span th:text="#{language.change}"></span>
+                </a>
+                <div id="languageDropdownMenuButton" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" id="btnEnglish" value="EN">
+                        <img th:src="@{/images/if_uk_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
+                        <span th:text="#{language.en}"></span>
+                    </a>
+                    <a class="dropdown-item" id="btnSpanish" value="ES">
+                        <img th:src="@{/images/if_spain_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
+                        <span th:text="#{language.es}"></span>
+                    </a>
+                    <a class="dropdown-item" id="btnFrench" value="FR">
+                        <img th:src="@{/images/if_fr_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
+                        <span th:text="#{language.fr}"></span>
+                    </a>
+                </div>
+            </li>
+
+            <li sec:authorize="!isAuthenticated()" class="nav-item">
+                <a class="nav-link" id="loginDropdown" href="/login">
+                    <i class='fas fa-sign-in-alt' style='font-size:16px'></i>
+                    <span th:text="#{login.message}"></span>
+                </a>
+            </li>
+
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" id="passwordChange" href="/password-change">
+                    <i class='fas fa-sign-in-alt' style='font-size:16px'></i>
+                    <span th:text="#{password.change}"></span>
+                </a>
+            </li>
+
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/logout">
+                    <i class='fas fa-sign-out-alt' style='font-size:16px'></i>
+                    <span th:text="#{disconnect}"></span>
+                </a>
+            </li>
+
+        </ul>
+
+
+    </div>
+</nav>

@@ -284,8 +284,63 @@ class Sdi2425Entrega1Ext514ApplicationTests {
 		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
 		String error1 = PO_HomeView.getP().getString("Error.register.dni.duplicate", PO_Properties.getSPANISH());
 		String error2 = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH());
-		//PO_PrivateView.editUserError(driver, "99887766A", "12345678Z", "", "", error1, error2); 99999992C
 		PO_PrivateView.editUserError(driver, "99999992C", "12345678Z", "", "", error1, error2);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba40]
+	 * Modificación de contraseña con datos válidos.
+	 */
+	@Test
+	@Order(40)
+	void Prueba40() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String newPassword = "a123456789A-";
+		PO_PrivateView.changePassword(driver, "@Dm1n1str@D0r", newPassword);
+		PO_LoginView.logout(driver);
+		PO_LoginView.login(driver, "12345678Z", newPassword);
+		PO_PrivateView.listUsers(driver, usersService.getUsers());
+
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba41]
+	 * Modificación de contraseña con datos inválidos (contraseña anterior incorrecta).
+	 */
+	@Test
+	@Order(41)
+	void Prueba41() {
+		PO_LoginView.login(driver, "12345678Z", "a123456789A-");
+		String error = PO_HomeView.getP().getString("Error.password.change.incorrect", PO_Properties.getSPANISH());
+		PO_PrivateView.changePasswordError(driver, "@Dm1n1str@D0r", "a123456789A-", "a123456789A-", error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba42]
+	 * Modificación de contraseña con datos inválidos (nueva contraseña débil).
+	 */
+	@Test
+	@Order(42)
+	void Prueba42() {
+		PO_LoginView.login(driver, "12345678Z", "a123456789A-");
+		String error = PO_HomeView.getP().getString("Error.password.change.weak", PO_Properties.getSPANISH());
+		PO_PrivateView.changePasswordError(driver, "a123456789A-", "123456", "123456", error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba43]
+	 * Modificación de contraseña con datos inválidos (repetición de contraseña inválida).
+	 */
+	@Test
+	@Order(43)
+	void Prueba43() {
+		PO_LoginView.login(driver, "12345678Z", "a123456789A-");
+		String error = PO_HomeView.getP().getString("Error.password.change.different", PO_Properties.getSPANISH());
+		PO_PrivateView.changePasswordError(driver, "a123456789A-", "123456789aA-", "123456789aA#", error);
 		PO_LoginView.logout(driver);
 	}
 

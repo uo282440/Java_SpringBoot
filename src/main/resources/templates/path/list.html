@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+
+    <h2 th:text="#{paths}"></h2>
+
+    <p th:text="#{paths.personal.info}">:</p>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover" th:fragment="pathsTable" id="pathsTable">
+
+            <thead>
+                <tr>
+                    <th scope="col" th:text="#{path.date.initial}"></th>
+                    <th scope="col" th:text="#{path.time.initial}"></th>
+                    <th scope="col" th:text="#{vehicle.registration}"></th>
+                    <th scope="col" th:text="#{path.duration.hours}"></th>
+                    <th scope="col" th:text="#{path.odometer.initial}"></th>
+                    <th scope="col" th:text="#{path.odometer.final}"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="path : ${pathList}">
+                    <td th:text="${path.getOnlyDate()}"></td>
+                    <td th:text="${path.getOnlyTime()}"></td>
+                    <td th:text="${path.vehicleRegistration}"></td>
+                    <td th:text="${path.time}"></td>
+                    <td th:text="${path.initialOdometer}"></td>
+                    <td th:text="${path.finalOdometer}"></td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <footer th:replace="fragments/pagination"/>
+
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

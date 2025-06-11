@@ -15,8 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Arrays;
 
 @Controller
 public class UsersController {
@@ -88,6 +92,38 @@ public class UsersController {
         String username = getCurrentUsername();
         logService.saveLog(username, "PET", "/user/register");
         logService.saveLog(username, "ALTA", "Usuario registrado: " + user.getDni());
+
+        return "redirect:/user/list";
+    }
+
+
+    @RequestMapping(value = "/user/edit/{id}",  method = RequestMethod.GET)
+    public String edit(Model model, @PathVariable Long id) {
+
+        User user = usersService.getUser(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("roles", Arrays.asList(rolesService.getRoles()));
+
+        return "user/edit";
+    }
+
+    @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
+    public String edit(@PathVariable Long id, @ModelAttribute User user, BindingResult result, Model model) {
+
+        User originalUser = usersService.getUser(id);
+
+        editFormValidator.validate(user, result, originalUser.getDni());
+        if(result.hasErrors()) {
+            model.addAttribute("roles", Arrays.asList(rolesService.getRoles()));
+            return "user/edit";
+        }
+
+        originalUser.setDni(user.getDni());
+        originalUser.setName(user.getName());
+        originalUser.setLastName(user.getLastName());
+        originalUser.setRole(user.getRole());
+        usersService.editUser(originalUser);
 
         return "redirect:/user/list";
     }

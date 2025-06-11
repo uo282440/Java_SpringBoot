@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+    <!-- Barra de Navegación superior -->
+    <nav th:replace="fragments/nav"></nav>
+
+    <div class="container" id="main-container">
+
+        <h2>Editar usuario</h2>
+
+        <form class="form-horizontal" method="post" th:action="${'/user/edit/' + user.id}" th:object="${user}">
+
+
+            <div class="form-group">
+
+                <label class="control-label col-sm-2" for="dni" th:text="#{user.dni}">:</label>
+
+                <div class="col-sm-10">
+                    <input th:value="${user.dni}" id="dni" type="text" class="form-control" name="dni"
+                           placeholder="00000000A"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label class="control-label col-sm-2" for="name" th:text="#{user.name}">:</label>
+
+                <div class="col-sm-10">
+                    <input th:value="${user.name}" id="name" type="text" class="form-control" name="name"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label class="control-label col-sm-2" for="lastName" th:text="#{user.lastName}">:</label>
+
+                <div class="col-sm-10">
+                    <input th:value="${user.lastName}" id="lastName" type="text" class="form-control" name="lastName"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label class="control-label col-sm-2" for="role" th:text="#{user.role}">:</label>
+
+                <div class="col-sm-10" th:if="${roles != null and not #lists.isEmpty(roles)}">
+                    <select id="role" class="form-control" name="role">
+                        <option th:each="role : ${roles}"
+                                th:value="${role}"
+                                th:text="${role}">
+                          Rol
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-primary" th:text="#{modify}"></button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</body>
+</html>

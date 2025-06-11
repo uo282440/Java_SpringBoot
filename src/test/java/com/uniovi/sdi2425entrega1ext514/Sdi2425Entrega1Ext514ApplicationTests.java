@@ -249,4 +249,44 @@ class Sdi2425Entrega1Ext514ApplicationTests {
 		PO_LoginView.logout(driver);
 	}
 
+	/**
+	 * [Prueba18]
+	 * Autenticarse como administrador, editar un usuario estándar, cambiando su rol a administrador, DNI, nombre y
+	 * apellidos, comprobar que los datos se han actualizados correctamente. Salir de sesión como administrador y
+	 * autenticarse como el usuario modificado y acceder a la funcionalidad de listado de usuarios del sistema
+	 * para probar el nuevo rol de administrador.
+	 */
+	@Test
+	@Order(18)
+	void Prueba18() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+
+		//editamos el primer usuario
+		String[] values = PO_PrivateView.editUser(driver, usersService.getStandardUsers());
+		PO_LoginView.logout(driver);
+
+		//entramos en sesión como el nuevo usuario
+		PO_LoginView.login(driver, values[0], "123456");
+
+		//Como Admin, deberiamos poder entrar a registar vehiculo
+		driver.navigate().to(URL + "/user/list");
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba19]
+	 * Editar un empleado introduciendo datos inválidos (DNI existente asignado a otro usuario del sistema, nombre y
+	 * apellidos vacíos), comprobar que se devuelven los mensajes de error correctamente y que el empleado no se actualiza.
+	 */
+	@Test
+	@Order(19)
+	void Prueba19() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error1 = PO_HomeView.getP().getString("Error.register.dni.duplicate", PO_Properties.getSPANISH());
+		String error2 = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH());
+		//PO_PrivateView.editUserError(driver, "99887766A", "12345678Z", "", "", error1, error2); 99999992C
+		PO_PrivateView.editUserError(driver, "99999992C", "12345678Z", "", "", error1, error2);
+		PO_LoginView.logout(driver);
+	}
+
 }

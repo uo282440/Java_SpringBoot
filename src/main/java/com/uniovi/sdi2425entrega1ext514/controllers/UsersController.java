@@ -1,12 +1,18 @@
 package com.uniovi.sdi2425entrega1ext514.controllers;
 
+import com.uniovi.sdi2425entrega1ext514.entities.User;
 import com.uniovi.sdi2425entrega1ext514.services.LogService;
 import com.uniovi.sdi2425entrega1ext514.services.RolesService;
 import com.uniovi.sdi2425entrega1ext514.services.UsersService;
 import com.uniovi.sdi2425entrega1ext514.validators.EditFormValidator;
 import com.uniovi.sdi2425entrega1ext514.validators.PasswordChangeFormValidator;
 import com.uniovi.sdi2425entrega1ext514.validators.RegisterFormValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -32,9 +38,27 @@ public class UsersController {
         this.logService = logService;
     }
 
+    private String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "user/login";
     }
+
+    @RequestMapping(value = "/user/list", method = RequestMethod.GET)
+    public String listUsers(Model model, Pageable pageable) {
+
+        Page<User> users = usersService.getUsers(pageable);
+        model.addAttribute("usersList", users.getContent());
+        model.addAttribute("page", users);
+
+        logService.saveLog(getCurrentUsername(), "PET", "/user/list");
+
+        return "user/list";
+    }
+
 }

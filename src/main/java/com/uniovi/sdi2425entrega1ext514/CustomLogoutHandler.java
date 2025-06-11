@@ -21,7 +21,7 @@ public class CustomLogoutHandler implements LogoutHandler {
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if (authentication != null && authentication.getName() != null) {
             String username = authentication.getName();
-            logService.saveLog(username, "LOGOUT", "Cierre de sesión exitoso");
+            logService.saveLog(username, "LOGOUT", "Has cerrado sesion correctamente");
         }
     }
 

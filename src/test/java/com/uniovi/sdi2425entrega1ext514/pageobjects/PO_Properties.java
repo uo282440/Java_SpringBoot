@@ -22,9 +22,7 @@ public class PO_Properties {
 	{
 		PO_Properties.Path = Path;
 	}
-	//
-	// locale is de index in idioms array.
-	//
+
     public String getString(String prop, int locale) {
 		ResourceBundle bundle = ResourceBundle.getBundle(Path, idioms[locale]);
 		String value = bundle.getString(prop);

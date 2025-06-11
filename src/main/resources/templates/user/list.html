@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+    <!-- Barra de Navegación superior -->
+    <nav th:replace="fragments/nav"/>
+
+    <div class="container">
+
+        <h2 th:text="#{users}"></h2>
+
+        <p th:text="#{users.info}"></p>
+
+        <div class="table-responsive">
+
+            <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+
+            <script>
+                $( "#updateButton" ).click(function() {
+                    $("#usersTable").load('/user/list/update');
+                });
+            </script>
+
+            <table class="table table-hover" th:fragment="usersTable" id="usersTable">
+
+                <thead>
+                    <tr>
+                        <th scope="col" th:text="#{user.dni}"></th>
+                        <th scope="col" th:text="#{user.name}"></th>
+                        <th scope="col" th:text="#{user.lastName}"></th>
+                        <th scope="col" th:text="#{modify}"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="user : ${usersList}">
+                        <td th:text="${user.dni}">71888888X</td>
+                        <td th:text="${user.name}">Nombre del alumno</td>
+                        <td  th:text="${user.lastName}">Apellidos del alumno</td>
+                        <td><a th:href="${'/user/edit/' + user.id}" th:text="#{modify}"></a></td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <footer th:replace="fragments/pagination"/>
+    </div>
+    <footer th:replace="fragments/footer"/>
+</body>
+</html>

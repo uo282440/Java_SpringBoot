@@ -1,9 +1,6 @@
 package com.uniovi.sdi2425entrega1ext514;
 
-import com.uniovi.sdi2425entrega1ext514.pageobjects.PO_HomeView;
-import com.uniovi.sdi2425entrega1ext514.pageobjects.PO_LoginView;
-import com.uniovi.sdi2425entrega1ext514.pageobjects.PO_Properties;
-import com.uniovi.sdi2425entrega1ext514.pageobjects.PO_View;
+import com.uniovi.sdi2425entrega1ext514.pageobjects.*;
 import com.uniovi.sdi2425entrega1ext514.services.PathService;
 import com.uniovi.sdi2425entrega1ext514.services.RefuelService;
 import com.uniovi.sdi2425entrega1ext514.services.UsersService;
@@ -19,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class Sdi2425Entrega1Ext514ApplicationTests {
 
 	static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
@@ -186,6 +184,69 @@ class Sdi2425Entrega1Ext514ApplicationTests {
 
 		// Comprobamos que la lista esté vacía
 		Assertions.assertTrue(elementos.isEmpty(), "El texto '" + textoNoPresente + "' está presente en la página.");
+	}
+
+	/**
+	 [Prueba7] Registro de un Empleado con datos válidos.
+	 */
+	@Test
+	@Order(7)
+	void Prueba7() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		PO_PrivateView.registerUser(driver);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 [Prueba8] Registro de un usuario con datos inválidos (DNI vacío, nombre vacío, apellidos vacíos)
+	 */
+	@Test
+	@Order(8)
+	void Prueba8() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH());
+		PO_PrivateView.registerUserError(driver, "", "", "", error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 [Prueba9] Registro de un usuario con datos inválidos (DNI con formato incorrecto)
+	 */
+	@Test
+	@Order(9)
+	void Prueba9() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.register.dni.format", PO_Properties.getSPANISH());
+		PO_PrivateView.registerUserError(driver, "1723098712", "pepep", "pepe", error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 [Prueba10] Registro de Usuario con datos inválidos (DNI existente)
+	 */
+	@Test
+	@Order(10)
+	void Prueba10() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.register.dni.duplicate", PO_Properties.getSPANISH());
+		PO_PrivateView.registerUserError(driver, "12345678Z", "pepe", "pepe", error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba17]
+	 * Mostrar el listado de empleados y comprobar que se muestran todos los que existen en el sistema, incluyendo el
+	 * empleado actual y los empleados administradores
+	 */
+	@Test
+	@Order(17)
+	void Prueba17() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+
+		//comprobamos que se muestran todos los que hay actualmente en el sistema
+		PO_PrivateView.listUsers(driver, usersService.getUsers());
+
+		PO_LoginView.logout(driver);
 	}
 
 }

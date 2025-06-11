@@ -31,6 +31,8 @@ public class InsertSampleDataService {
 
     @PostConstruct
     public void init() {
+
+        //Añado usuarios de Prueba
         User user1 = new User("99999990A", "Pedro", "Díaz");
         user1.setPassword("123456");
         user1.setRole(rolesService.getRoles()[0]);
@@ -51,12 +53,63 @@ public class InsertSampleDataService {
         user5.setPassword("123456");
         user5.setRole(rolesService.getRoles()[0]);
 
+        User user6 = new User("99999993F", "Laura", "García");
+        user6.setPassword("123456");
+        user6.setRole(rolesService.getRoles()[0]);
 
+        User user7 = new User("99999994G", "Antonio", "López");
+        user7.setPassword("123456");
+        user7.setRole(rolesService.getRoles()[0]);
+
+        User user8 = new User("99999995H", "Sofía", "Martínez");
+        user8.setPassword("123456");
+        user8.setRole(rolesService.getRoles()[0]);
+
+        User user9 = new User("99999996J", "Manuel", "Sánchez");
+        user9.setPassword("123456");
+        user9.setRole(rolesService.getRoles()[0]);
+
+        User user10 = new User("99999997K", "Lucía", "Ramírez");
+        user10.setPassword("123456");
+        user10.setRole(rolesService.getRoles()[0]);
+
+        User user11 = new User("99999998L", "David", "Torres");
+        user11.setPassword("123456");
+        user11.setRole(rolesService.getRoles()[0]);
+
+        User user12 = new User("99999999M", "Elena", "Flores");
+        user12.setPassword("123456");
+        user12.setRole(rolesService.getRoles()[0]);
+
+        User user13 = new User("88888888N", "Carlos", "Ortega");
+        user13.setPassword("123456");
+        user13.setRole(rolesService.getRoles()[0]);
+
+        User user14 = new User("77777777P", "Ana", "Castro");
+        user14.setPassword("123456");
+        user14.setRole(rolesService.getRoles()[0]);
+
+        User user15 = new User("66666666Q", "Javier", "Suárez");
+        user15.setPassword("123456");
+        user15.setRole(rolesService.getRoles()[0]);
+
+        // Añadimos todos los usuarios al servicio
         usersService.addUser(user1);
         usersService.addUser(user2);
         usersService.addUser(user3);
         usersService.addUser(user4);
         usersService.addUser(user5);
+        usersService.addUser(user6);
+        usersService.addUser(user7);
+        usersService.addUser(user8);
+        usersService.addUser(user9);
+        usersService.addUser(user10);
+        usersService.addUser(user11);
+        usersService.addUser(user12);
+        usersService.addUser(user13);
+        usersService.addUser(user14);
+        usersService.addUser(user15);
+
 
 
         // Creación de vehículos

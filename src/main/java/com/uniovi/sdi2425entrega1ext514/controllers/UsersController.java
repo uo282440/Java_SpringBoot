@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -60,5 +62,36 @@ public class UsersController {
 
         return "user/list";
     }
+
+    @RequestMapping(value = "/user/register", method = RequestMethod.GET)
+    public String register(Model model) {
+
+        User user = new User();
+
+        user.setPassword(usersService.generateUserPassword());
+        model.addAttribute("user", user);
+
+        return "user/register";
+    }
+
+    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
+    public String register(@Validated User user, BindingResult result) {
+
+        registerFormValidator.validate(user, result);
+        if(result.hasErrors()) {
+            return "user/register";
+        }
+
+        user.setRole(rolesService.getRoles()[0]);
+        usersService.addUser(user);
+
+        String username = getCurrentUsername();
+        logService.saveLog(username, "PET", "/user/register");
+        logService.saveLog(username, "ALTA", "Usuario registrado: " + user.getDni());
+
+        return "redirect:/user/list";
+    }
+
+
 
 }

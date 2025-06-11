@@ -43,8 +43,22 @@ public class PO_PrivateView extends PO_NavView {
 
     static public void listUsers(WebDriver driver, List<User> users) {
         goToUserLink(driver, "list");
-        for (User user : users) {
-            if (!findUser(driver, user)) Assertions.fail("User not found");
+
+        //primera pagina
+        for (int i = 0; i < 5; i++) {
+            if (!findUser(driver, users.get(i))) Assertions.fail("User not found");
+        }
+
+        //segunda pagina
+        driver.get("http://localhost:8100/user/list?page=1");
+        for (int i = 5; i < 10; i++) {
+            if (!findUser(driver, users.get(i))) Assertions.fail("User not found");
+        }
+
+        //tercera pagina
+        driver.get("http://localhost:8100/user/list?page=2");
+        for (int i = 10; i < 15; i++) {
+            if (!findUser(driver, users.get(i))) Assertions.fail("User not found");
         }
     }
 

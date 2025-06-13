@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+
+<div class="container">
+
+  <h2 th:text="#{Nav.vehicles.register}"></h2>
+
+  <form class="form-horizontal" method="post" action="/vehicle/register" th:object="${vehicle}">
+
+    <!-- Matrícula -->
+    <div class="form-group">
+
+      <label class="control-label col-sm-2" for="plate" th:text="#{vehicle.registration}">:</label>
+
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="plate" th:field="*{plate}" placeholder="" />
+        <span class="text-danger" th:if="${#fields.hasErrors('plate')}" th:errors="*{plate}"></span>
+      </div>
+    </div>
+
+    <!-- Número de bastidor -->
+    <div class="form-group">
+
+      <label class="control-label col-sm-2" for="chassisNumber" th:text="#{vehicle.chassisNumber}">:</label>
+
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="chassisNumber" th:field="*{chassisNumber}" placeholder="" />
+        <span class="text-danger" th:if="${#fields.hasErrors('chassisNumber')}" th:errors="*{chassisNumber}"></span>
+      </div>
+    </div>
+
+    <!-- Marca -->
+    <div class="form-group">
+
+      <label class="control-label col-sm-2" for="brandName" th:text="#{vehicle.brand}">:</label>
+
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="brandName" th:field="*{brandName}" placeholder="" />
+        <span class="text-danger" th:if="${#fields.hasErrors('brandName')}" th:errors="*{brandName}"></span>
+      </div>
+    </div>
+
+    <!-- Modelo -->
+    <div class="form-group">
+
+      <label class="control-label col-sm-2" for="model" th:text="#{vehicle.model}">:</label>
+
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="model" th:field="*{model}" placeholder="" />
+        <span class="text-danger" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
+      </div>
+    </div>
+
+    <!-- Tipo de combustible -->
+    <div class="form-group">
+
+      <label class="control-label col-sm-2" for="fuelType" th:text="#{vehicle.typeFuel}">:</label>
+
+      <div class="col-sm-10">
+        <select class="form-control" id="fuelType" th:field="*{fuelType}">
+          <option value="">Seleccione un tipo</option>
+          <option th:each="type : ${fuelTypes}" th:value="${type}" th:text="${type}"></option>
+        </select>
+        <span class="text-danger" th:if="${#fields.hasErrors('fuelType')}" th:errors="*{fuelType}"></span>
+      </div>
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" th:text="#{send}"></button>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+
+<footer th:replace="fragments/footer"/>
+
+</body>
+</html>

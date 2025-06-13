@@ -1,5 +1,6 @@
 package com.uniovi.sdi2425entrega1ext514;
 
+import com.uniovi.sdi2425entrega1ext514.entities.Path;
 import com.uniovi.sdi2425entrega1ext514.pageobjects.*;
 import com.uniovi.sdi2425entrega1ext514.services.PathService;
 import com.uniovi.sdi2425entrega1ext514.services.RefuelService;
@@ -11,11 +12,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -503,6 +509,221 @@ sistema.
 		}
 		PO_LoginView.logout(driver);
 	}
+
+	/**
+    [Prueba24]
+      Mostrar el listado de trayectos y comprobar que se muestran todos los que tienen al empleado actual asignado como conductor.
+     */
+	@Test
+	@Order(24)
+	void Prueba24() {
+		String userDNI = "99999992D";
+		PO_LoginView.login(driver, userDNI, "123456");
+		//Entramos en el elemento de trayectos ([1]) y luego en el ver trayectos ([2])
+		driver.navigate().to(URL + "/path/list");
+
+		// Obtener datos esperados de la base de datos
+		List<Path> expectedPaths = pathService.getPathsByUserDni(userDNI); // Ajusta según tu lógica de negocio
+
+		// Obtener los elementos de la lista desde la página web
+		List<WebElement> pathListRows = driver.findElements(By.xpath("//table[@id='pathsTable']/tbody/tr"));
+
+		// Verificar que el tamaño de la lista coincide
+		assertEquals(expectedPaths.size(), pathListRows.size()*3, "El número de trayectos no coincide");
+
+		String[] parts;
+		// Verificar contenido de cada trayecto
+		for (int i = 0; i < 5; i++) {//
+			parts = pathListRows.get(i).getText().split("\\s+");
+			assertEquals(parts[0], expectedPaths.get(i).getOnlyDate(), "No coincide la fecha: " + i);
+			assertEquals(parts[1], expectedPaths.get(i).getOnlyTime(), "No coincide la hora: " + i);
+			assertEquals(parts[2], expectedPaths.get(i).getVehicleRegistration(), "No coincide la matricula: " + i);
+			String expectedVehicle = expectedPaths.get(i).getUserDni();
+			assertEquals(userDNI, expectedVehicle, "El empleado no coincide en la el conductor: " + i);
+		}
+
+		//logout
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+   [Prueba25] Inicio de trayecto válido.
+    */
+	@Test
+	@Order(25)
+	void Prueba25() throws Exception {
+
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		//Esperar a que la nueva página cargue y verificar el mensaje de bienvenida
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
+		WebElement welcomeMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//*[contains(text(), 'Bienvenidos a la pagina principal')]")
+		));
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba26] Inicio de trayecto no válido (el empleado tiene otro trayecto en curso).
+     */
+	@Test
+	@Order(26)
+	void Prueba26() throws Exception {
+		String userDNI = "99999992D";
+		PO_LoginView.login(driver, userDNI, "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button2 = driver.findElement(By.xpath("//button[@type='submit']"));
+		button2.click();
+
+		//esperamos que nos muestre el mensaje de error
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		WebElement welcomeMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//*[contains(text(), 'El empleado ya tiene un trayecto activo')]")
+		));
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba27] Inicio de trayecto no válido (el vehículo para el que se quiere iniciar el trayecto no está disponible).
+     */
+	@Test
+	@Order(27)
+	void Prueba27() throws Exception {
+
+		String userDNI = "99999992E";
+		PO_LoginView.login(driver, userDNI, "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		//comprobar que NO se muestra ningun texto que contenga 1111ZZZ (vehiculo no disponible)
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		boolean condicion = false;
+
+		try {
+			WebElement welcomeMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+					By.xpath("//*[contains(text(), '1111ZZZ')]")
+			));
+
+		} catch (Exception e) { //porque NO deberia aparecer
+			condicion = true;
+		}
+
+		Assertions.assertTrue(condicion);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba33] Registro de fin de trayecto válido. Se asume que el usuario "userActive" tiene un trayecto activo.
+	 * Se rellena el odómetro con un valor mayor al inicio del trayecto.
+	 */
+	@Test
+	@Order(33)
+	void Prueba33() throws InterruptedException {
+
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		PO_PrivateView.goToEndTrip(driver, "5060");
+
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba34] Registro de fin de trayecto inválido (odómetro vacío).Se asume que "userActive" tiene un trayecto activo,
+	 * pero no se rellena el campo odómetro.
+	 */
+	@Test
+	@Order(34)
+	void Prueba34() throws InterruptedException {
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		PO_PrivateView.goToEndTripError(driver, "0");
+
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba35] Registro de fin de trayecto inválido (odómetro negativo).Se asume que "userActive" tiene un trayecto activo,
+	 * pero se rellena el campo con un valor negativo.
+	 */
+	@Test
+	@Order(35)
+	void Prueba35() throws InterruptedException {
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		PO_PrivateView.goToEndTripError(driver, "-2");
+
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba36] Registro de fin de trayecto inválido (no hay trayectos en curso).Se asume que el usuario "userNoActive"
+	 * no tiene un trayecto activo.
+	 */
+	@Test
+	@Order(36)
+	void Prueba36() throws InterruptedException {
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		PO_PrivateView.goToEndTrip(driver, "5090");
+
+		PO_PrivateView.openDropdown(driver, "trayectosPersonales");
+
+		// Espera a que aparezca el enlace correcto
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[@href='/path/end']", 5);
+		WebElement link = driver.findElement(By.xpath("//a[@href='/path/end']"));
+		link.click();
+
+		//intentamos entrar en acabar un tryecto pero nos devuelven a la pagina pincipal
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Bienvenidos a la pagina principal')]", 5));
+
+		PO_LoginView.logout(driver);
+	}
+
 
 	/**
 	 * [Prueba40]

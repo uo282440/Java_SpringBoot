@@ -382,7 +382,7 @@ public class PO_PrivateView extends PO_NavView {
 
     private static void fillFormEndTripForm(WebDriver driver, String kilometersP) {
         SeleniumUtils.waitSeconds(driver, 5);
-        WebElement kilometers = driver.findElement(By.name("kilometers"));
+        WebElement kilometers = driver.findElement(By.id("finalOdometer"));
         kilometers.clear();
         kilometers.sendKeys(kilometersP);
 
@@ -393,7 +393,7 @@ public class PO_PrivateView extends PO_NavView {
 
     private static void fillFormEndTripFormError(WebDriver driver, String kilometersP) {
         SeleniumUtils.waitSeconds(driver, 5);
-        WebElement kilometers = driver.findElement(By.name("kilometers"));
+        WebElement kilometers = driver.findElement(By.id("finalOdometer"));
         kilometers.clear();
         kilometers.sendKeys(kilometersP);
 

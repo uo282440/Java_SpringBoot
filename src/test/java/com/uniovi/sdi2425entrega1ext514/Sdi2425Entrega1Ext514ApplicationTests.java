@@ -5,6 +5,7 @@ import com.uniovi.sdi2425entrega1ext514.services.PathService;
 import com.uniovi.sdi2425entrega1ext514.services.RefuelService;
 import com.uniovi.sdi2425entrega1ext514.services.UsersService;
 import com.uniovi.sdi2425entrega1ext514.services.VehicleService;
+import com.uniovi.sdi2425entrega1ext514.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -234,6 +236,78 @@ class Sdi2425Entrega1Ext514ApplicationTests {
 	}
 
 	/**
+        [Prueba11] Registro de un Vehículos con datos válidos
+     */
+	@Test
+	@Order(11)
+	void Prueba11() {
+
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		PO_PrivateView.registerVehicle(driver);
+		PO_LoginView.logout(driver);
+	}
+	/**
+    [Prueba12] Registro de un Vehículos con datos inválidos (matrícula vacía, número de bastidor vacío,
+        marca y modelo vacíos.
+     */
+	@Test
+	@Order(12)
+	void Prueba12() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH());
+		PO_PrivateView.registerVehicleError(driver, "", "", "","", error);
+		PO_LoginView.logout(driver);
+	}
+	/**
+    [Prueba13] Registro de un Vehículos con datos inválidos (formato de matrícula inválido).
+     */
+	@Test
+	@Order(13)
+	void Prueba13() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.vehicle.plate.format", PO_Properties.getSPANISH());
+		PO_PrivateView.registerVehicleError(driver, "1341341341341341", "11111111111111111", "toyota","qwe" ,error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba14] Registro de un Vehículos con datos inválidos (longitud del número de bastidor inválido).
+     */
+	@Test
+	@Order(14)
+	void Prueba14() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.vehicle.chassisNumber.length", PO_Properties.getSPANISH());
+		PO_PrivateView.registerVehicleError(driver, "1234ABC", "1", "toyota","qwe" ,error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba15] Registro de un Vehículos con datos inválidos (matrícula existente)
+
+     */
+	@Test
+	@Order(15)
+	void Prueba15() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.vehicle.plate.duplicate", PO_Properties.getSPANISH());
+		PO_PrivateView.registerVehicleError(driver, "1234BCD", "11111111111111111", "toyota","qwe" ,error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba16] Registro de un Vehículos con datos inválidos (número de bastidor existente).
+     */
+	@Test
+	@Order(16)
+	void Prueba16() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		String error = PO_HomeView.getP().getString("Error.vehicle.chassisNumber.repeated", PO_Properties.getSPANISH());
+		PO_PrivateView.registerVehicleError(driver, "1234ABC", "12345678901234111", "toyota","qwe" ,error);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
 	 * [Prueba17]
 	 * Mostrar el listado de empleados y comprobar que se muestran todos los que existen en el sistema, incluyendo el
 	 * empleado actual y los empleados administradores
@@ -285,6 +359,148 @@ class Sdi2425Entrega1Ext514ApplicationTests {
 		String error1 = PO_HomeView.getP().getString("Error.register.dni.duplicate", PO_Properties.getSPANISH());
 		String error2 = PO_HomeView.getP().getString("Error.empty", PO_Properties.getSPANISH());
 		PO_PrivateView.editUserError(driver, "99999992C", "12345678Z", "", "", error1, error2);
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	[Prueba20] Mostrar el listado de vehículos y comprobar que se muestran todos los que existen en el
+sistema.
+	 */
+	@Test
+	@Order(20)
+	void Prueba20() {
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+		PO_PrivateView.listVehicles(driver, vehicleService.getVehicles());
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba21] Ir a la lista de vehículos, borrar el primer vehículo de la lista, comprobar que la lista se actualiza
+        y dicho vehículo desaparece.
+     */
+	@Test
+	@Order(21)
+	void Prueba21() {
+
+
+		// Iniciar sesión como administrador
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+
+		// Ir al listado de vehículos
+		PO_PrivateView.goToVehicleList(driver);
+
+		// Obtener la matrícula del primer vehículo
+		WebElement primeraFila = driver.findElement(By.xpath("//table/tbody/tr[1]"));
+		String matricula = primeraFila.findElement(By.xpath("td[2]")).getText(); // td[2] = matrícula
+
+		// Seleccionar su checkbox
+		WebElement checkbox = primeraFila.findElement(By.xpath("td[1]/input[@type='checkbox']"));
+		checkbox.click();
+
+		// Pulsar botón "Eliminar seleccionados"
+		WebElement botonEliminar = driver.findElement(By.cssSelector("button[type='submit'].btn-danger"));
+		botonEliminar.click();
+
+		// Esperar a que recargue la lista
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//h2[contains(text(),'Vehiculos')]", 3);
+
+		// Verificar que la matrícula ya no aparece en la tabla
+		List<WebElement> coincidencias = driver.findElements(By.xpath("//table/tbody/tr/td[contains(text(),'" + matricula + "')]"));
+		Assertions.assertTrue(coincidencias.isEmpty(), "El vehículo con matrícula " + matricula + " sigue presente tras ser eliminado.");
+		PO_LoginView.logout(driver);
+	}
+
+
+	/**
+    [Prueba22] Ir a la lista de vehículos, borrar el último vehículo de la lista, comprobar que la lista se actualiza
+        y dicho vehículo desaparece.
+     */
+	@Test
+	@Order(22)
+	void Prueba22() {
+
+		// Iniciar sesión como administrador
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+
+		// Ir al listado de vehículos
+		PO_PrivateView.goToVehicleList(driver);
+
+		// Obtener todas las filas de la tabla (vehículos)
+		List<WebElement> filas = driver.findElements(By.xpath("//table/tbody/tr"));
+		int ultimaPosicion = filas.size();
+
+		// Obtener la matrícula del último vehículo
+		WebElement ultimaFila = driver.findElement(By.xpath("//table/tbody/tr[" + ultimaPosicion + "]"));
+		String matricula = ultimaFila.findElement(By.xpath("td[2]")).getText();
+
+		// Seleccionar su checkbox
+		WebElement checkbox = ultimaFila.findElement(By.xpath("td[1]/input[@type='checkbox']"));
+		checkbox.click();
+
+		// Pulsar botón "Eliminar seleccionados"
+		WebElement botonEliminar = driver.findElement(By.cssSelector("button[type='submit'].btn-danger"));
+		botonEliminar.click();
+
+		// Esperar a que recargue la lista
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//h2[contains(text(),'Vehiculos')]", 3);
+
+		// Verificar que la matrícula ya no aparece en la tabla
+		List<WebElement> coincidencias = driver.findElements(By.xpath("//table/tbody/tr/td[contains(text(),'" + matricula + "')]"));
+		Assertions.assertTrue(coincidencias.isEmpty(), "El vehículo con matrícula " + matricula + " sigue presente tras ser eliminado.");
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba23] Ir a la lista de vehículos, borrar 3 vehículos, comprobar que la lista se actualiza y dichos
+        vehículos desaparecen.
+     */
+	@Test
+	@Order(23)
+	void Prueba23() {
+
+		// Iniciar sesión como administrador
+		PO_LoginView.login(driver, "12345678Z", "@Dm1n1str@D0r");
+
+		// Ir al listado de vehículos
+		PO_PrivateView.goToVehicleList(driver);
+
+		// Obtener las filas actuales
+		List<WebElement> filas = driver.findElements(By.xpath("//table/tbody/tr"));
+		int totalFilas = filas.size();
+
+		// Asegurarse de que haya al menos 3 vehículos
+		Assertions.assertTrue(totalFilas >= 3, "No hay suficientes vehículos para realizar la prueba.");
+
+		// Lista para almacenar las matrículas que vamos a eliminar
+		List<String> matriculasEliminadas = new ArrayList<>();
+
+		// Seleccionar los 3 primeros vehículos y guardar sus matrículas
+		for (int i = 1; i <= 3; i++) {
+			WebElement fila = driver.findElement(By.xpath("//table/tbody/tr[" + i + "]"));
+
+			// Obtener matrícula (td[2])
+			String matricula = fila.findElement(By.xpath("td[2]")).getText();
+			matriculasEliminadas.add(matricula);
+
+			// Seleccionar su checkbox (td[1]/input)
+			WebElement checkbox = fila.findElement(By.xpath("td[1]/input[@type='checkbox']"));
+			checkbox.click();
+		}
+
+		// Pulsar botón "Eliminar seleccionados"
+		WebElement botonEliminar = driver.findElement(By.cssSelector("button[type='submit'].btn-danger"));
+		botonEliminar.click();
+
+		// Esperar a que recargue la lista
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//h2[contains(text(),'Vehiculos')]", 3);
+
+		// Verificar que ninguna de las matrículas eliminadas está en la nueva tabla
+		for (String matricula : matriculasEliminadas) {
+			List<WebElement> coincidencias = driver.findElements(By.xpath("//table/tbody/tr/td[contains(text(),'" + matricula + "')]"));
+			Assertions.assertTrue(coincidencias.isEmpty(),
+					"El vehículo con matrícula " + matricula + " sigue presente tras ser eliminado.");
+		}
 		PO_LoginView.logout(driver);
 	}
 

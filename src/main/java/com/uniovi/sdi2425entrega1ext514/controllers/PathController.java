@@ -135,4 +135,27 @@ public class PathController {
             return "path/end";
         }
     }
+
+
+    @GetMapping("/listFromCar")
+    public String showPathsFromCar(Model model, Principal principal) {
+
+        List<Vehicle> allVehicles = vehicleService.findAll();
+        model.addAttribute("vehicles", allVehicles);
+
+        return"path/listFromCar";
+    }
+
+
+    @GetMapping("/vehicle/{plate}")
+    public String showPathsFromCar2(Model model, Principal principal, Pageable pageable, @PathVariable String plate) {
+
+        Page<Path> pathsByVehicle = pathService.findByVehiclePlate(plate, pageable);
+
+        model.addAttribute("pathsList", pathsByVehicle.getContent());
+        model.addAttribute("page", pathsByVehicle);
+
+
+        return"path/listFromCar2";
+    }
 }

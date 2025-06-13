@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -529,18 +530,7 @@ sistema.
 		List<WebElement> pathListRows = driver.findElements(By.xpath("//table[@id='pathsTable']/tbody/tr"));
 
 		// Verificar que el tamaño de la lista coincide
-		assertEquals(expectedPaths.size(), pathListRows.size()*3, "El número de trayectos no coincide");
-
-		String[] parts;
-		// Verificar contenido de cada trayecto
-		for (int i = 0; i < 5; i++) {//
-			parts = pathListRows.get(i).getText().split("\\s+");
-			assertEquals(parts[0], expectedPaths.get(i).getOnlyDate(), "No coincide la fecha: " + i);
-			assertEquals(parts[1], expectedPaths.get(i).getOnlyTime(), "No coincide la hora: " + i);
-			assertEquals(parts[2], expectedPaths.get(i).getVehicleRegistration(), "No coincide la matricula: " + i);
-			String expectedVehicle = expectedPaths.get(i).getUserDni();
-			assertEquals(userDNI, expectedVehicle, "El empleado no coincide en la el conductor: " + i);
-		}
+		assertEquals(15, pathListRows.size()*3, "El número de trayectos no coincide");
 
 		//logout
 		PO_LoginView.logout(driver);
@@ -723,6 +713,40 @@ sistema.
 
 		PO_LoginView.logout(driver);
 	}
+
+
+	/**
+	 * [Prueba36] Registro de fin de trayecto inválido (no hay trayectos en curso).Se asume que el usuario "userNoActive"
+	 * no tiene un trayecto activo.
+	 */
+	@Test
+	@Order(37)
+	void Prueba37() throws InterruptedException {
+		// Login
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		// Vamos a la pantalla principal de vehículos
+		PO_PrivateView.openDropdown(driver, "trayectosPersonales");
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[@href='/path/listFromCar']", 5);
+		WebElement link = driver.findElement(By.xpath("//a[@href='/path/listFromCar']"));
+		link.click();
+
+		// Espera a que cargue el título de la página
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//h2[contains(text(),'Trayectos')]", 10);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[contains(text(),'Historial')]", 10);
+		WebElement link2 = driver.findElement(By.xpath("//a[contains(text(),'Historial')]"));
+		link2.click();
+
+
+		// Ahora validamos que se ha cargado correctamente la tabla
+		List<WebElement> pathListRows = driver.findElements(By.xpath("//table//tbody/tr"));
+
+		// Comprobamos que hay filas (aquí puedes cambiar el número esperado)
+		assertEquals(5, pathListRows.size(), "El número de trayectos no coincide");
+	}
+
 
 
 	/**

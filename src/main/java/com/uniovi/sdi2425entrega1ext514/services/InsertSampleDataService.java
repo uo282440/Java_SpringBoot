@@ -143,7 +143,7 @@ public class InsertSampleDataService {
         }
 
         // Asignar 15 trayectos por usuario
-        User[] users = {user1, user2, user3, user4, user5};
+        User[] users = {user1, user2, user3, user4, user5, user6, user7, user8, user9, user10, user11, user12, user13, user14, user15};
         int pathId = 0;
         for (User user : users) {
             for (int i = 0; i < 15; i++) {
@@ -163,6 +163,32 @@ public class InsertSampleDataService {
                 path.setUserDni(user.getDni());
                 pathService.addPath(path);
                 pathId++;
+            }
+        }
+
+        // Segundo: Asegurar que cada vehículo tenga al menos 15 trayectos
+        for (Vehicle vehicle : vehicles) {
+            int currentPaths = pathService.getPathsByVehicle(vehicle.getPlate()).size();
+            if (currentPaths < 15) {
+                int neededPaths = 15 - currentPaths;
+                for (int i = 0; i < neededPaths; i++) {
+                    // Seleccionar usuario de forma rotatoria
+                    User user = users[(currentPaths + i) % users.length];
+
+                    int kmStart = 1000 + pathId * 10;
+                    int kmEnd = kmStart + 10 + (i % 5);
+                    double fuelUsed = 5 + (i % 5);
+
+                    Date date = new Date(System.currentTimeMillis() - (long) ((currentPaths + i) * 86400000L));
+                    LocalDateTime dateTime = date.toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime();
+
+                    Path path = new Path(dateTime, 1.2 + (i * 0.1), kmStart, kmEnd, vehicle.getPlate(), fuelUsed, user);
+                    path.setUserDni(user.getDni());
+                    pathService.addPath(path);
+                    pathId++;
+                }
             }
         }
 

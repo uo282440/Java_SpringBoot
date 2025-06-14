@@ -51,6 +51,12 @@ public class VehicleController {
         Pageable pageableWithSize = PageRequest.of(pageable.getPageNumber(), 5);
         Page<Vehicle> vehicles = vehicleService.findAll(pageableWithSize);
 
+        //obtener usuario autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        logService.saveLog(username, "PET", "/vehicle/list");
+
+
         model.addAttribute("vehicles", vehicles.getContent());
         model.addAttribute("page", vehicles);
         return "vehicle/listVehicles";
@@ -87,7 +93,7 @@ public class VehicleController {
         String username = authentication.getName();
 
         //guardar el log
-        logService.saveLog(username, "REGISTER_VEHICLE", "/vehicle/register");
+        logService.saveLog(username, "ALTA", "/vehicle/register");
 
         return "redirect:/vehicle/list";
     }
@@ -97,6 +103,14 @@ public class VehicleController {
 
         model.addAttribute("vehicle", new Vehicle());
         model.addAttribute("fuelTypes", Vehicle.FUEL_TYPES.values());
+
+        //obtener usuario autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        //guardar el log
+        logService.saveLog(username, "PET", "/vehicle/register");
+
         return "vehicle/registerVehicle";
     }
 

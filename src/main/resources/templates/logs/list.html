@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+
+    <h2 th:text="#{users}"></h2>
+    <p th:text="#{users.info}">:</p>
+    <div class="table-responsive">
+
+        <form method="get" th:action="@{/logs}" style="margin-bottom: 20px;">
+
+            <div class="form-group">
+
+                <label for="logType" >Filtrar por tipo</label>
+
+                <select class="form-control" id="logType" name="type" onchange="this.form.submit()">
+
+                    <option value="" th:selected="${selectedType == null}">Todos</option>
+
+                    <option th:each="type : ${logTypes}"
+                            th:value="${type}"
+                            th:text="${type}"
+                            th:selected="${type == selectedType}">
+                    </option>
+
+                </select>
+            </div>
+        </form>
+
+        <form th:action="@{/logs/delete}" method="post">
+
+            <input type="hidden" name="type" th:value="${selectedType}">
+
+            <button type="submit" class="btn btn-danger">
+                <span th:text="#{log.deleteAll}">Borrar logs de este tipo</span>
+            </button>
+        </form>
+
+
+
+        <table class="table table-hover" id="logsTable">
+
+            <thead>
+                <tr>
+                    <th scope="col" th:text="#{log.user}"></th>
+                    <th scope="col" th:text="#{log.action}"></th>
+                    <th scope="col" th:text="#{log.endpoint}"></th>
+                    <th scope="col" th:text="#{log.timestamp}"></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="log : ${logsList}">
+                    <td th:text="${log.username}"></td>
+                    <td th:text="${log.action}"></td>
+                    <td th:text="${log.endpoint}"></td>
+                    <td th:text="${log.timestamp}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

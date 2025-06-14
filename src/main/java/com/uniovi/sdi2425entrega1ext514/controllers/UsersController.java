@@ -53,6 +53,7 @@ public class UsersController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
+
         return "user/login";
     }
 
@@ -72,6 +73,8 @@ public class UsersController {
     public String register(Model model) {
 
         User user = new User();
+
+
 
         user.setPassword(usersService.generateUserPassword());
         model.addAttribute("user", user);

@@ -11,6 +11,7 @@ import com.uniovi.sdi2425entrega1ext514.services.VehicleService;
 import com.uniovi.sdi2425entrega1ext514.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -983,6 +984,246 @@ sistema.
 		PO_LoginView.logout(driver);
 	}
 
+	/**
+	 * [Prueba44]
+	 * Visualizar al menos tres páginas en español/inglés/español (comprobando que algunas de las etiquetas cambian al idioma correspondiente).
+	 * Ejemplo, Página principal/Opciones Principales de Empleado/Listado de Empleados.
+	 */
+	@Test
+	@Order(44)
+	void Prueba44() {
+		PO_LoginView.login(driver, "66778899A", "123456");
+
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'usuarios')]", 5));
+
+		//cambiamos idioma
+		PO_PrivateView.openDropdown(driver, "btnLanguage");
+		// Esperar a que el elemento sea visible
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[@id='btnEnglish']", 5);
+		//clic con JavaScript
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("document.getElementById('btnEnglish').click();");
+
+
+		//se ve en ingles
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Language')]", 5));
+
+		driver.navigate().to(URL + "/user/list");
+
+		//se ve en ingles
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'users')]", 5));
+
+		//cambiamos idioma
+		PO_PrivateView.openDropdown(driver, "btnLanguage");
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[@id='btnSpanish']", 5);
+		//clic con JavaScript
+		JavascriptExecutor js2 = (JavascriptExecutor) driver;
+		js2.executeScript("document.getElementById('btnSpanish').click();");
+
+
+		//se ve en español
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Usuarios')]", 5));
+
+		driver.navigate().to(URL + "/vehicle/list");
+
+		//se ve en español
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Vehiculos')]", 5));
+
+		//cambiamos ingles
+		PO_PrivateView.openDropdown(driver, "btnLanguage");
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[@id='btnEnglish']", 5);
+		//clic con JavaScript
+		js.executeScript("document.getElementById('btnEnglish').click();");
+
+
+		//se ve en ingles
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'vehicles')]", 5));
+
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba45]
+	 * Visualizar al menos tres páginas en inglés/francés o idioma elegido/inglés (comprobando que algunas de las etiquetas cambian al idioma correspondiente).
+	 * Ejemplo, Página principal/Opciones Principales de Empleado/Listado de Empleados.
+	 */
+	@Test
+	@Order(45)
+	void Prueba45() {
+		PO_LoginView.login(driver, "66778899A", "123456");
+
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'usuarios')]", 5));
+
+		//cambiamos idioma
+		PO_PrivateView.openDropdown(driver, "btnLanguage");
+		// Esperar a que el elemento sea visible
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[@id='btnEnglish']", 5);
+		//clic con JavaScript
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("document.getElementById('btnEnglish').click();");
+
+
+		//se ve en ingles
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Language')]", 5));
+
+		driver.navigate().to(URL + "/user/list");
+
+		//se ve en ingles
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'users')]", 5));
+
+		//cambiamos idioma a frances
+		PO_PrivateView.openDropdown(driver, "btnLanguage");
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[@id='btnFrench']", 5);
+		//clic con JavaScript
+		JavascriptExecutor js2 = (JavascriptExecutor) driver;
+		js2.executeScript("document.getElementById('btnFrench').click();");
+
+
+		//se ve en frances
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'utilisateurs')]", 5));
+
+		driver.navigate().to(URL + "/vehicle/list");
+
+		//se ve en frances
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'vehicules')]", 5));
+
+		//cambiamos ingles
+		PO_PrivateView.openDropdown(driver, "btnLanguage");
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[@id='btnEnglish']", 5);
+		//clic con JavaScript
+		js.executeScript("document.getElementById('btnEnglish').click();");
+
+
+		//se ve en ingles
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'vehicles')]", 5));
+
+		PO_LoginView.logout(driver);
+	}
+
+
+	/**
+	 * [Prueba46]
+	 * Intentar acceder sin estar autenticado a la opción de listado de empleados. Se deberá volver al formulario de login.
+	 */
+	@Test
+	@Order(46)
+	void Prueba46() {
+		driver.navigate().to(URL + "/user/list");
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Identificate')]", 5));
+	}
+
+	/**
+	 * [Prueba47]
+	 * Intentar acceder sin estar autenticado a la opción de listado de vehículos disponibles. Se deberá volver al formulario de login.
+	 */
+	@Test
+	@Order(47)
+	void Prueba47() {
+		driver.navigate().to(URL + "/vehicle/list");
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Identificate')]", 5));
+	}
+
+	/**
+	 * [Prueba48]
+	 * Estando autenticado como usuario estándar intentar acceder a una opción disponible solo para usuarios administradores
+	 * (Añadir menú de auditoria (visualizar logs)). Se deberá indicar un mensaje de acción prohibida.
+	 */
+	@Test
+	@Order(48)
+	void Prueba48() {
+		driver.navigate().to(URL + "/user/logs");
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'Identificate')]", 5));
+	}
+
+	/**
+	 * [Prueba49]
+	 * Estando autenticado como usuario administrador visualizar todos los logs generados en una serie de interacciones.
+	 * Esta prueba deberá generar al menos dos interacciones de cada tipo y comprobar que el listado incluye los logs correspondientes.
+	 */
+	@Test
+	@Order(49)
+	void Prueba49() {
+		// 2 login fallidos,
+		PO_LoginView.login(driver, "66666666Q", "Dm1n1str@D0r"); //LOGIN-ERR
+		PO_LoginView.login(driver, "66666666Q", "@Dm0n1str@D0r");//LOGIN-ERR
+
+		PO_LoginView.login(driver, "66666666Q", "123456"); //LOGIN-EX
+
+		// 2 vehiculos registrados
+		PO_PrivateView.registerNewVehicle(driver, "7654JRB", "92837465748392098"); //ALTA
+		PO_PrivateView.registerNewVehicle(driver, "0650JRB", "02830465748392098"); //ALTA
+
+		// logout y volver a hacer login
+		PO_LoginView.logout(driver); //LOGOUT
+		PO_LoginView.login(driver, "66666666Q", "123456"); //LOGIN-EX
+
+		driver.navigate().to(URL + "/logs");
+
+		// Esperar a que la tabla esté visible
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("logsTable")));
+
+		// Obtener las filas de la tabla
+		WebElement table = driver.findElement(By.id("logsTable"));
+
+		// Encuentra todas las filas dentro del tbody
+		List<WebElement> rows = table.findElements(By.cssSelector("tbody tr"));
+
+		// Verifica que haya exactamente 5 filas
+		Assertions.assertEquals(true, rows.size() > 9);
+
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+	 * [Prueba50]
+	 * Estando autenticado como usuario administrador, ir a visualización de logs y filtrar por un tipo,
+	 * pulsar el botón/enlace borrar logs y comprobar que se eliminan los logs del tipo seleccionado, de la base de datos.
+	 */
+	@Test
+	@Order(50)
+	void Prueba50() {
+		PO_LoginView.login(driver, "66666666Q", "123456"); // LOGIN-EX
+
+		driver.navigate().to(URL + "/logs");
+
+
+		// Hacer clic en el botón de borrar logs
+		WebElement deleteLogsButton = driver.findElement(By.cssSelector("button.btn-danger"));
+		deleteLogsButton.click();
+
+		// Esperar a que la tabla esté visible
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("logsTable")));
+
+		// Obtener las filas de la tabla
+		WebElement table = driver.findElement(By.id("logsTable"));
+
+		// Encuentra todas las filas dentro del tbody
+		List<WebElement> rows = table.findElements(By.cssSelector("tbody tr"));
+
+		// Verifica que haya exactamente 5 filas
+		Assertions.assertEquals(true, rows.size() <= 2 );
+
+
+	}
 
 
 }

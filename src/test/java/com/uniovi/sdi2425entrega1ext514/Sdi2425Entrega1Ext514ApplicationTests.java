@@ -1,6 +1,7 @@
 package com.uniovi.sdi2425entrega1ext514;
 
 import com.uniovi.sdi2425entrega1ext514.entities.Path;
+import com.uniovi.sdi2425entrega1ext514.entities.Refuel;
 import com.uniovi.sdi2425entrega1ext514.entities.Vehicle;
 import com.uniovi.sdi2425entrega1ext514.pageobjects.*;
 import com.uniovi.sdi2425entrega1ext514.services.PathService;
@@ -623,6 +624,133 @@ sistema.
 	}
 
 	/**
+    [Prueba28] Repostaje válido.
+     */
+	@Test
+	@Order(28)
+	void Prueba28() throws InterruptedException {
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to(URL + "/refuel/new");
+		WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement gasolinera = wait2.until(ExpectedConditions.presenceOfElementLocated(By.name("stationName")));
+
+		PO_PrivateView.fillFormRegisterRefuel(driver,"GasProm", "1","10",5000);
+		//nos redirige
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free", "//h2[contains(text(),'Vehiculos')]", 3));
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba29] Repostaje inválido (no hay un trayecto en curso).
+     */
+	@Test
+	@Order(29)
+	void Prueba29() throws InterruptedException {
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		//acabamos con el trayecto que ya tiene este usuario
+		PO_PrivateView.goToStartTrip(driver);
+		PO_PrivateView.goToEndTrip(driver, "5000");
+
+		driver.navigate().to(URL + "/refuel/new");
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free", "//h2[contains(text(),'Bienvenidos')]", 10));
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba30] Repostaje inválido (nombre de la estación vacío, precio vacío, cantidad vacía, odómetro vacío).
+     */
+	@Test
+	@Order(30)
+	void Prueba30() throws InterruptedException {
+
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to(URL + "/refuel/new");
+		WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement gasolinera = wait2.until(ExpectedConditions.presenceOfElementLocated(By.name("stationName")));
+
+		PO_PrivateView.fillFormRegisterRefuel(driver,"", "-1","-1",5000);
+
+		//nos muestra mensajes de error
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[contains(text(),'El nombre de la estación es obligatorio')]", 3));
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[contains(text(),'El precio debe ser un número positivo')]", 3));
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[contains(text(),'La cantidad debe ser un número positivo')]", 3));
+
+		PO_PrivateView.goToEndTrip(driver, "5005");
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba31] Repostaje inválido (precio y cantidad negativos).
+     */
+	@Test
+	@Order(31)
+	void Prueba31() throws InterruptedException {
+
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to(URL + "/refuel/new");
+		WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement gasolinera = wait2.until(ExpectedConditions.presenceOfElementLocated(By.name("stationName")));
+
+		PO_PrivateView.fillFormRegisterRefuel(driver,"GazProm", "-1","-1",5000);
+
+		//nos muestra mensajes de error
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[contains(text(),'El precio debe ser un número positivo')]", 5));
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free", "//*[contains(text(),'La cantidad debe ser un número positivo')]", 5));
+
+		PO_PrivateView.goToEndTrip(driver, "5050");
+		PO_LoginView.logout(driver);
+	}
+
+	/**
+    [Prueba32] Repostaje inválido (odómetro anterior al del inicio del trayecto).
+     */
+	@Test
+	@Order(32)
+	void Prueba32() throws InterruptedException {
+
+		PO_LoginView.login(driver, "99999992D", "123456");
+
+		PO_PrivateView.goToStartTrip(driver);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to(URL + "/refuel/new");
+		WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement gasolinera = wait2.until(ExpectedConditions.presenceOfElementLocated(By.name("stationName")));
+
+		PO_PrivateView.fillFormRegisterRefuel(driver,"GazProm", "1","10",5);
+
+		// cnos muestra mensajes de error
+		Assertions.assertNotNull(SeleniumUtils.waitLoadElementsBy(driver, "free",
+				"//*[contains(text(),'El odómetro debe ser mayor que el valor inicial del trayecto')]", 5));
+		PO_LoginView.logout(driver);
+	}
+
+	/**
 	 * [Prueba33] Registro de fin de trayecto válido. Se asume que el usuario "userActive" tiene un trayecto activo.
 	 * Se rellena el odómetro con un valor mayor al inicio del trayecto.
 	 */
@@ -745,6 +873,42 @@ sistema.
 
 		// Comprobamos que hay filas (aquí puedes cambiar el número esperado)
 		assertEquals(5, pathListRows.size(), "El número de trayectos no coincide");
+	}
+
+	/**
+	 * [Prueba38]
+	 * Mostrar el listado de repostajes y comprobar que se muestran todos los realizados por el vehículo con la matrícula seleccionada.
+	 */
+	@Test
+	@Order(38)
+	void Prueba38() {
+		String userDNI = "99999990A";
+		PO_LoginView.login(driver, userDNI, "123456");
+
+		driver.get(URL + "/vehicle/free");
+
+		// Obtener los elementos de la lista
+		List<WebElement> vehicleListRows = driver.findElements(By.xpath("//table[@id='vehiclesTable']/tbody/tr"));
+
+		String[] vehiculo;
+		// Verificar contenido de cada trayecto
+		for (int i = 0; i < vehicleListRows.size(); i++) {
+			vehiculo = vehicleListRows.get(i).getText().split("\\s+");
+			List<Refuel> expectedRefuels = refuelService.getRefulsByVehicle(vehiculo[0]);
+			if (!expectedRefuels.isEmpty()) {
+				driver.get(URL + "/vehicle/paths/" + expectedRefuels.get(0).getId());
+
+				List<WebElement> refuelListRows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
+
+				String[] refuels;
+				for (int j = 0; j < refuelListRows.size(); j++) {
+					refuels = refuelListRows.get(j).getText().split("\\s+");
+					assertEquals(refuels[0], expectedRefuels.get(j).getOnlyDate(), "No coincide la fecha: " + j);
+					assertEquals(refuels[1], expectedRefuels.get(j).getOnlyTime(), "No coincide la hora: " + j);
+					assertEquals(vehiculo[0], expectedRefuels.get(j).getVehicleRegistration(), "No coincide la matricula: " + i);
+				}
+			}
+		}
 	}
 
 	/**

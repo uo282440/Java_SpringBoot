@@ -1,0 +1,56 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    
+    <h2>Repostajes</h2>
+
+    
+
+    <div id="refuelsTableContainer">
+        <div th:if="${refuelsList != null}">
+
+            <table class="table table-hover">
+                <thead>
+
+                <tr>
+                    <th scope="col" th:text="#{refuel.date.initial}"></th>
+                    <th scope="col" th:text="#{refuel.time.initial}"></th>
+                    <th scope="col" th:text="#{refuel.odometer}"></th>
+                    <th scope="col" th:text="#{refuel.type}"></th>
+                    <th scope="col" th:text="#{refuel.station}"></th>
+                    <th scope="col" th:text="#{refuel.price}"></th>
+                    <th scope="col" th:text="#{refuel.quantity}"></th>
+                    <th scope="col" th:text="#{refuel.total.price}"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="refuel : ${refuelsList}">
+                    <td th:text="${refuel.getOnlyDate()}"></td>
+                    <td th:text="${refuel.getOnlyTime()}"></td>
+                    <td th:text="${refuel.odometer}"></td>
+                    <td th:text="${vehicle.fuelType}"></td>
+                    <td th:text="${refuel.stationName}"></td>
+                    <td th:text="${refuel.fuelPrice}"></td>
+                    <td th:text="${refuel.fuelQuantity}"></td>
+                    <td th:text="${refuel.priceTotal()}"></td>
+                </tr>
+                </tbody>
+            </table>
+            
+            <footer th:replace="fragments/pagination"/>
+        </div>
+    </div>
+
+
+
+
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

@@ -194,5 +194,40 @@ public class InsertSampleDataService {
 
         Refuel r1 = new Refuel("RedSol", 1.40, 30, 2142, new Date(), "", vehicles[0]);
         refuelService.addRefuel(r1);
+
+        // Añadimos 15 repostajes por vehículo
+        for (Vehicle vehicle : vehicles) {
+            for (int i = 0; i < 15; i++) {
+                // Fecha: hace i días
+                Date date = new Date(System.currentTimeMillis() - (long) (i * 86400000L));
+
+                // Odómetro: sumamos 50 km por repostaje
+                double odometer = vehicle.getOdometer() + i * 50;
+
+                // Estación de servicio (variando un poco)
+                String stationName = "Gasolinera " + (char)('A' + (i % 5));
+
+                // Precio por unidad (entre 1.3 y 1.5)
+                double pricePerUnit = 1.30 + (i % 3) * 0.05;
+
+                // Cantidad repostada (entre 20 y 40 litros)
+                double quantity = 20 + (i % 5) * 5;
+
+                // Calculamos el precio total
+                double totalPrice = pricePerUnit * quantity;
+
+                Refuel refuel = new Refuel(
+                        stationName,
+                        pricePerUnit,
+                        quantity,
+                        odometer,
+                        date,
+                        "",
+                        vehicle
+                );
+
+                refuelService.addRefuel(refuel);
+            }
+        }
     }
 }

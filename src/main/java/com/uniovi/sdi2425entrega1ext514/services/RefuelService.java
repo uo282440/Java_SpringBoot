@@ -91,8 +91,15 @@ public class RefuelService {
      * @param plate
      * @return
      */
-    public List<Refuel> getRefuelsByVehicle(String plate) {
+    public Page<Refuel> getRefuelsByVehicle(String plate, Pageable pageable) {
+        Page<Refuel> result = refuelRepository.getRefuelsByVehicle(plate, pageable);
+        return result;
+    }
+
+
+    public List<Refuel> getRefulsByVehicle(String plate) {
         List<Refuel> result = refuelRepository.getRefulsByVehicle(plate);
         return result;
     }
+
 }

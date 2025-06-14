@@ -24,6 +24,9 @@ public interface VehicleRepository extends CrudRepository<Vehicle, Long> {
     @Query("SELECT v FROM Vehicle v WHERE v.isFree = TRUE ORDER BY v.plate ASC")
     Page<Vehicle> findFree(Pageable pageable);
 
+    @Query("SELECT v FROM Vehicle v WHERE v.isFree = TRUE ORDER BY v.plate ASC")
+    List<Vehicle> findFreeList();
+
     Page<Vehicle> findAll(Pageable pageable);
 
     List<Vehicle> findAll();
@@ -31,4 +34,10 @@ public interface VehicleRepository extends CrudRepository<Vehicle, Long> {
     @Modifying
     @Query("DELETE FROM Vehicle v WHERE v.plate IN :plates")
     void deleteByPlates(@Param("plates") List<String> plates);
+
+
+    @Modifying
+    @Query("UPDATE Vehicle v SET v.isFree = :isFree WHERE v.plate = :plate")
+    void updateVehicleState(@Param("plate") String plate, @Param("isFree") boolean isFree);
+
 }

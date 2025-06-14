@@ -1,6 +1,7 @@
 package com.uniovi.sdi2425entrega1ext514;
 
 import com.uniovi.sdi2425entrega1ext514.entities.Path;
+import com.uniovi.sdi2425entrega1ext514.entities.Vehicle;
 import com.uniovi.sdi2425entrega1ext514.pageobjects.*;
 import com.uniovi.sdi2425entrega1ext514.services.PathService;
 import com.uniovi.sdi2425entrega1ext514.services.RefuelService;
@@ -21,8 +22,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -747,7 +747,21 @@ sistema.
 		assertEquals(5, pathListRows.size(), "El número de trayectos no coincide");
 	}
 
+	/**
+	 * [Prueba39]
+	 * Mostrar el listado de vehículos disponibles y comprobar que se muestren sólo los que no estén siendo utilizados.
+	 */
+	@Test
+	@Order(39)
+	void Prueba39() {
+		String userDNI = "99999990A";
+		PO_LoginView.login(driver, userDNI, "123456");
+		driver.get(URL + "/vehicle/free");
 
+		List<WebElement> elementos = driver.findElements(By.xpath("//*[contains(text(), 'OCUPADO')]"));
+
+		assertTrue(elementos.isEmpty());
+	}
 
 	/**
 	 * [Prueba40]
@@ -804,5 +818,7 @@ sistema.
 		PO_PrivateView.changePasswordError(driver, "a123456789A-", "123456789aA-", "123456789aA#", error);
 		PO_LoginView.logout(driver);
 	}
+
+
 
 }

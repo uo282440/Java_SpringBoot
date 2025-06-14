@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,6 +106,16 @@ public class VehicleService {
     }
 
     /**
+     * Encuentra Vehiculos libres
+     * @param
+     * @return
+     */
+    public List<Vehicle> findFreeList() {
+        List<Vehicle> vehicles = vehicleRepository.findFreeList();
+        return vehicles;
+    }
+
+    /**
      * Devuevle un vehiculo segun su ID
      * @param id
      * @return
@@ -122,4 +133,10 @@ public class VehicleService {
         List<Vehicle> vehicles = vehicleRepository.findAll();
         return vehicles;
     }
+
+    @Transactional
+    public void updateState(String plate, boolean isFree) {
+        vehicleRepository.updateVehicleState(plate, isFree);
+    }
+
 }

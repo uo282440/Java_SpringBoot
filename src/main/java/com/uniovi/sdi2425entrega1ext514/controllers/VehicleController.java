@@ -101,7 +101,14 @@ public class VehicleController {
     }
 
 
-
+    @RequestMapping("/vehicle/free")
+    public String listVehicleFree(Model model, Pageable pageable) {
+        Pageable pageableWithSize = PageRequest.of(pageable.getPageNumber(), 5);
+        Page<Vehicle> vehicles = vehicleService.findFree(pageable);
+        model.addAttribute("vehicles", vehicles.getContent());
+        model.addAttribute("page", vehicles);
+        return "vehicle/listFreeVehicles";
+    }
 
 
 }

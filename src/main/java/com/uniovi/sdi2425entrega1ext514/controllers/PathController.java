@@ -81,12 +81,17 @@ public class PathController {
         path.setUser(user);
         path.setVehicleRegistration(vehiclePlate);
 
+        Vehicle v = vehicleService.findByPlate(vehiclePlate);
+        v.setFree(false);
+        vehicleService.updateState(vehiclePlate, false); //el coche ya no esta libre (isFree a false)
+
         // Valida el objeto 'path' usando el StartTripValidator
         startTripValidator.validate(path, result);
         if (result.hasErrors()) {
             model.addAttribute("availableVehicles", vehicleService.getAvailableVehicles());
             return "path/start";
         }
+
         pathService.startPath(path);
         System.out.println(path.toString());
         System.out.println("Guardando trayecto con usuario: " + path.getUser());
@@ -126,6 +131,10 @@ public class PathController {
             if (result.hasErrors()) {
                 return "path/end";
             }
+
+            Vehicle v = vehicleService.findByPlate(activePath.getVehicleRegistration());
+            v.setFree(false);
+            vehicleService.updateState(v.getPlate(), true); //el coche ya esta libre (isFree a true)
 
             pathService.endPath(activePath);
             return "redirect:/path/list";

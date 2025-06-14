@@ -1225,5 +1225,198 @@ sistema.
 
 	}
 
+	/**
+	 * [Prueba51] Acceder al sistema para crear incidencias y registrar una incidencia sin respuesta. La incidencia
+	 * 	debe registrarse correctamente y mostrarse en la vista de listado de incidencias.
+	 */
+	@Test
+	@Order(51)
+	void Prueba51() {
+		PO_LoginView.login(driver, "99999992D", "123456"); // LOGIN-EX
+
+		PO_PrivateView.goToStartTrip(driver);
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to("http://localhost:8100/incidencia/add");
+
+		// false --> sin respuesta
+		PO_PrivateView.fillFormCreateIncidencia(driver, "abcd", "ssdfsdf", "", false);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/incidencia/list");
+	}
+
+
+	/**
+	 * [Prueba52] Acceder al sistema para crear incidencias y registrar una incidencia con respuesta. La incidencia
+	 * 	debe registrarse correctamente y mostrarse en la vista de listado de incidencias.
+	 */
+	@Test
+	@Order(52)
+	void Prueba52() {
+		PO_LoginView.login(driver, "99999992D", "123456"); // LOGIN-EX
+
+		PO_PrivateView.goToStartTrip(driver);
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to("http://localhost:8100/incidencia/add");
+
+		// true --> con respuesta
+		PO_PrivateView.fillFormCreateIncidencia(driver, "abcd", "ssdfsdf", "", true);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/incidencia/list");
+	}
+
+	/**
+	 *[Prueba53] Entrar en el listado de incidencias del sistema y comprobar que se muestran todas en el orden
+	 * indicado.
+	 */
+	@Test
+	@Order(53)
+	void Prueba53() throws InterruptedException {
+
+		PO_LoginView.login(driver, "99999992D", "123456"); // LOGIN-EX
+
+		PO_PrivateView.goToStartTrip(driver);
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to("http://localhost:8100/incidencia/add");
+
+		// true --> con respuesta
+		PO_PrivateView.fillFormCreateIncidencia(driver, "abcd", "ssdfsdf", "descripcion", true);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/incidencia/list");
+
+		PO_LoginView.logout(driver);
+
+		PO_LoginView.login(driver, "66666666Q", "123456"); // LOGIN-EX
+
+		driver.navigate().to("http://localhost:8100/incidencia/listAdmin");
+
+		//titulo de la incidencia anterior
+		String textoBuscado = "abcd";
+		boolean textoPresente = driver.findElements(By.xpath("//*[contains(text(),'" + textoBuscado + "')]")).size() > 0;
+
+		assertTrue(textoPresente);
+
+	}
+
+
+
+
+	/**
+	 * [Prueba54] Acceder al detalle de una incidencia con estado “REGISTRADA”. Se debe modificar de
+	 * 	forma automática el estado a “LEIDA”.
+	 */
+	@Test
+	@Order(54)
+	void Prueba54() throws InterruptedException {
+
+		PO_LoginView.login(driver, "66666666Q", "123456"); // LOGIN-EX
+
+		driver.navigate().to("http://localhost:8100/incidencia/listAdmin");
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[contains(text(),'Modificar')]", 10);
+		WebElement link2 = driver.findElement(By.xpath("//a[contains(text(),'Modificar')]"));
+		link2.click();
+
+		String textoBuscado = "LEIDA";
+		boolean textoPresente = driver.findElements(By.xpath("//*[contains(text(),'" + textoBuscado + "')]")).size() > 0;
+
+		assertTrue(textoPresente);
+	}
+
+
+	/**
+	 * [Prueba55] Utilizar los botones de estado dentro del detalle de una incidencia para cambiar su estado a
+	 * 	“EN PROCESO”.
+	 */
+	@Test
+	@Order(55)
+	void Prueba55() throws InterruptedException {
+
+		PO_LoginView.login(driver, "66666666Q", "123456"); // LOGIN-EX
+
+		driver.navigate().to("http://localhost:8100/incidencia/listAdmin");
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[contains(text(),'Modificar')]", 10);
+		WebElement link2 = driver.findElement(By.xpath("//a[contains(text(),'Modificar')]"));
+		link2.click();
+
+		String textoBuscado = "LEIDA";
+		boolean textoPresente = driver.findElements(By.xpath("//*[contains(text(),'" + textoBuscado + "')]")).size() > 0;
+		assertTrue(textoPresente);
+
+		//PROCESAMOS LA incidencia
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[contains(text(),'En Proceso')]", 10);
+		WebElement link3 = driver.findElement(By.xpath("//button[contains(text(),'En Proceso')]"));
+		link3.click();
+
+
+		//vemos que ha cambiado su estado
+		String textoBuscado2 = "EN PROCESO";
+		boolean textoPresente2 = driver.findElements(By.xpath("//*[contains(text(),'" + textoBuscado2 + "')]")).size() > 0;
+		assertTrue(textoPresente2);
+	}
+
+
+	/**
+	 * [Prueba56] Utilizar los botones de estado dentro del detalle de una incidencia para cambiar su estado a
+	 * 	“TERMINADA”.
+	 */
+	@Test
+	@Order(56)
+	void Prueba56() throws InterruptedException {
+
+		PO_LoginView.login(driver, "99999992D", "123456"); // LOGIN-EX
+
+		PO_PrivateView.goToStartTrip(driver);
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[@type='submit']", 5);
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+
+		driver.navigate().to("http://localhost:8100/incidencia/add");
+
+		// true --> con respuesta
+		PO_PrivateView.fillFormCreateIncidencia(driver, "abcd", "ssdfsdf", "", true);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/incidencia/list");
+
+		PO_LoginView.logout(driver);
+
+		PO_LoginView.login(driver, "66666666Q", "123456"); // LOGIN-EX
+
+		driver.navigate().to("http://localhost:8100/incidencia/listAdmin");
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[contains(text(),'Modificar')]", 10);
+		WebElement link = driver.findElement(By.xpath("//a[contains(text(),'Modificar')]"));
+		link.click();
+
+		//PROCESAMOS LA incidencia
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[contains(text(),'En Proceso')]", 10);
+		WebElement link2 = driver.findElement(By.xpath("//button[contains(text(),'En Proceso')]"));
+		link2.click();
+
+		//vemos que ha cambiado su estado
+		String textoBuscado2 = "EN PROCESO";
+		boolean textoPresente2 = driver.findElements(By.xpath("//*[contains(text(),'" + textoBuscado2 + "')]")).size() > 0;
+		assertTrue(textoPresente2);
+
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//button[contains(text(),'Terminada')]", 10);
+		WebElement link3 = driver.findElement(By.xpath("//button[contains(text(),'Terminada')]"));
+		link3.click();
+
+		//vemos que ha cambiado su estado
+		String textoBuscado3 = "TERMINADA";
+		boolean textoPresente3 = driver.findElements(By.xpath("//*[contains(text(),'" + textoBuscado3 + "')]")).size() > 0;
+		assertTrue(textoPresente3);
+	}
+
+
 
 }

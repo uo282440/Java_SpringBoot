@@ -1,0 +1,76 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+
+    <h2>Incidencias</h2>
+
+
+    <div id="incidenciasTableContainer">
+        <div th:if="${incidencia != null}">
+
+            <div th:if="${mensajeError != null}">
+                <h3 th:text="${mensajeError}"></h3>
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+
+                <tr>
+                    <th scope="col" >Fecha y Hora</th>
+                    <th scope="col" >Titulo</th>
+                    <th scope="col" >Empleado</th>
+                    <th scope="col" >Estado</th>
+                    <th scope="col" >Descripcion</th>
+                    <th scope="col" >Respuesta</th>
+                    <th scope="col" >Procesar</th>
+                    <th scope="col" >Terminar</th>
+
+
+                </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td th:text="${incidencia.getDate()}"></td>
+                        <td th:text="${incidencia.getTitle()}"></td>
+                        <td th:text="${incidencia.getUser().getFullName()}"></td>
+                        <td th:text="${incidencia.getState()}"></td>
+                        <td th:text="${incidencia.getDescription()}"></td>
+                        <td th:text="${incidencia.getResponse()}"></td>
+
+
+                        <!-- Se podria hacer mas facil con un link, pero meter botones con post en formulario?-->
+                        <td>
+                            <form th:action="@{/incidencia/enProceso/{id} (id=${incidencia.id})}" method="post">
+                                <button type="submit" class="btn btn-primary">En Proceso</button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <form th:action="@{/incidencia/terminar/{id} (id=${incidencia.id})}" method="post">
+                                <button type="submit" class="btn btn-primary">Terminada</button>
+                            </form>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+
+
+
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

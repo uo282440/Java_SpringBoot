@@ -131,6 +131,34 @@ public class PO_PrivateView extends PO_NavView {
         }
     }
 
+
+    static public void fillFormCreateIncidencia(WebDriver driver, String titulop, String descripcionp, String responsep, boolean requiresResponse) {
+
+        SeleniumUtils.waitSeconds(driver, 5);
+        WebElement title = driver.findElement(By.name("title"));
+        title.clear();
+        title.sendKeys(titulop);
+
+        WebElement description = driver.findElement(By.name("description"));
+        description.click();
+        description.clear();
+        description.sendKeys(descripcionp);
+
+        // Seleccionar el radio button según el valor del parámetro
+        String value = requiresResponse ? "true" : "false";
+        WebElement radioButton = driver.findElement(By.cssSelector("input[name='requiresResponse'][value='" + value + "']"));
+        radioButton.click();
+
+        WebElement response = driver.findElement(By.name("response"));
+        response.click();
+        response.clear();
+        response.sendKeys(responsep);
+
+        By button = By.className("btn");
+        driver.findElement(button).click();
+    }
+
+
     static private void fillFormChangaPassword(WebDriver driver, String oldPasswordp, String newPasswordp,
                                                String passwordConfirmp) {
         SeleniumUtils.waitSeconds(driver, 5);

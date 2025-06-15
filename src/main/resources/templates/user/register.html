@@ -21,7 +21,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2"  for="name" th:text="#{user.name}">:</label>
+                <label class="control-label col-sm-2"  for="name" th:text="#{user.name}"></label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="name" name="name"
                            th:placeholder="#{user.example.name}"/>
@@ -30,7 +30,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="lastName" th:text="#{user.lastName}">:</label>
+                <label class="control-label col-sm-2" for="lastName" th:text="#{user.lastName}"></label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="lastName" name="lastName"
                            th:placeholder="#{user.example.lastName}"/>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="password" th:text="#{user.password}">:</label>
+                <label class="control-label col-sm-2" for="password" th:text="#{user.password}"></label>
                 <div class="col-sm-10">
                     <input th:value="${user.password}" type="text" class="form-control" id="password" name="password"
                            readonly required/>

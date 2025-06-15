@@ -11,7 +11,7 @@
     <div>
         <form th:action="@{/incidencia/listType}" method="get">
 
-            <label for="incidenciaTypes" >Incidencias:</label>
+            <label for="incidenciaTypes" th:text="#{incidencia.title.plural}">Incidencias:</label>
 
             <select id="incidenciaTypes" name="typeIncidencia">
                 <option>SIN_RESPUESTA</option>
@@ -19,7 +19,7 @@
                 <option>TERMINADA</option>
             </select>
 
-            <button type="submit" class="btn btn-primary">Seleccionar</button>
+            <button type="submit" class="btn btn-primary" th:text="#{incidencia.select}">Seleccionar</button>
         </form>
     </div>
 
@@ -31,12 +31,12 @@
                 <thead>
 
                 <tr>
-                    <th scope="col" >Vehiculo </th>
-                    <th scope="col" >Titulo</th>
-                    <th scope="col" >Descripcion</th>
-                    <th scope="col" >Requiere Respuesta</th>
-                    <th scope="col" >Respuesta</th>
-                    <th scope="col" >Estado</th>
+                    <th scope="col" th:text="#{vehicle}">Vehiculo </th>
+                    <th scope="col" th:text="#{incidencia.param.title}">Titulo</th>
+                    <th scope="col" th:text="#{incidencia.param.description}">Descripcion</th>
+                    <th scope="col" th:text="#{incidencia.param.requiresResponse}">Requiere Respuesta</th>
+                    <th scope="col" th:text="#{incidencia.param.response}">Respuesta</th>
+                    <th scope="col" th:text="#{incidencia.state}">Estado</th>
 
                 </tr>
                 </thead>

@@ -6,7 +6,7 @@
 <nav th:replace="fragments/nav"/>
 <div class="container">
 
-    <h2>Incidencias</h2>
+    <h2 th:text="#{incidencia.title.plural}">Incidencias</h2>
 
 
 
@@ -17,12 +17,11 @@
                 <thead>
 
                 <tr>
-                    <th scope="col" >Fecha y Hora</th>
-                    <th scope="col" >Titulo</th>
-                    <th scope="col" >Empleado</th>
-                    <th scope="col" >Estado</th>
-                    <th scope="col" >Detalles</th>
-
+                    <th scope="col" th:text="#{incidencia.date}">Fecha y Hora</th>
+                    <th scope="col" th:text="#{incidencia.param.title}">Titulo</th>
+                    <th scope="col" th:text="#{incidencia.employee}">Empleado</th>
+                    <th scope="col" th:text="#{incidencia.state}">Estado</th>
+                    <th scope="col" th:text="#{details}">Detalles</th>
 
                 </tr>
                 </thead>

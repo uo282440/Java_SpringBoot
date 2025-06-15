@@ -47,7 +47,7 @@
                     <a class="dropdown-item" href="/path/start" th:text="#{Nav.paths.start}"></a>
                     <a class="dropdown-item" href="/path/end" th:text="#{Nav.paths.end}">Finalizar</a>
                     <a class="dropdown-item" href="/path/list" th:text="#{Nav.paths.view}">Ver historial</a>
-                    <a class="dropdown-item" href="/path/listFromCar" >Trayectos de Coche</a>
+                    <a class="dropdown-item" href="/path/listFromCar" th:text="#{Nav.paths.car}">Trayectos de Coche</a>
                 </div>
             </li>
 
@@ -63,18 +63,18 @@
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/refuel/new">Repostar</a>
-                    <a class="dropdown-item" href="/refuel/list" >Ver historial</a>
+                    <a class="dropdown-item" href="/refuel/new" th:text="#{refuel.action}">Repostar</a>
+                    <a class="dropdown-item" href="/refuel/list" th:text="#{refuel.list}">Ver historial</a>
                 </div>
             </li>
 
             <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_STANDARD')" >
                 <a class="nav-link dropdown-toggle" href="#" id="incidencias" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false" th:text="Incidencias">
+                   aria-haspopup="true" aria-expanded="false" th:text="#{incidencia.title}">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/incidencia/add">Registrar</a>
-                    <a class="dropdown-item" href="/incidencia/list" >Ver Incidencias</a>
+                    <a class="dropdown-item" href="/incidencia/add"  th:text="#{incidencia.register}">Registrar</a>
+                    <a class="dropdown-item" href="/incidencia/list" th:text="#{incidencia.see}">Ver Incidencias</a>
                 </div>
             </li>
 
@@ -83,11 +83,11 @@
             </li>
 
             <li class="nav-item dropdown"  sec:authorize="hasRole('ROLE_ADMIN')" >
-                <a class="nav-link" id="listIncidencias" href="/incidencia/listAdmin">Incidencias</a>
+                <a class="nav-link" id="listIncidencias" href="/incidencia/listAdmin" th:text="#{incidencia.title}">Incidencias</a>
             </li>
 
             <li class="nav-item dropdown"  sec:authorize="hasRole('ROLE_ADMIN')" >
-                <a class="nav-link" id="editPaths" href="/path/listAdmin">Trayectos</a>
+                <a class="nav-link" id="editPaths" href="/path/listAdmin" th:text="#{Nav.paths}">Trayectos</a>
             </li>
         </ul>
 

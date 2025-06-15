@@ -6,7 +6,7 @@
 <nav th:replace="fragments/nav"/>
 <div class="container">
 
-    <h2>Incidencias</h2>
+    <h2 th:text="#{incidencia.title.plural}">Incidencias</h2>
 
 
     <div id="incidenciasTableContainer">
@@ -20,14 +20,14 @@
                 <thead>
 
                 <tr>
-                    <th scope="col" >Fecha y Hora</th>
-                    <th scope="col" >Titulo</th>
-                    <th scope="col" >Empleado</th>
-                    <th scope="col" >Estado</th>
-                    <th scope="col" >Descripcion</th>
-                    <th scope="col" >Respuesta</th>
-                    <th scope="col" >Procesar</th>
-                    <th scope="col" >Terminar</th>
+                    <th scope="col" th:text="#{incidencia.date}">Fecha y Hora</th>
+                    <th scope="col" th:text="#{incidencia.param.title}">Titulo</th>
+                    <th scope="col" th:text="#{incidencia.employee}">Empleado</th>
+                    <th scope="col" th:text="#{incidencia.state}">Estado</th>
+                    <th scope="col" th:text="#{incidencia.param.description}">Descripcion</th>
+                    <th scope="col" th:text="#{incidencia.param.response}">Respuesta</th>
+                    <th scope="col" th:text="#{incidencia.process}">Procesar</th>
+                    <th scope="col" th:text="#{incidencia.end}">Terminar</th>
 
 
                 </tr>
@@ -44,16 +44,15 @@
                         <td th:text="${incidencia.getResponse()}"></td>
 
 
-                        <!-- Se podria hacer mas facil con un link, pero meter botones con post en formulario?-->
                         <td>
                             <form th:action="@{/incidencia/enProceso/{id} (id=${incidencia.id})}" method="post">
-                                <button type="submit" class="btn btn-primary">En Proceso</button>
+                                <button type="submit" class="btn btn-primary" th:text="#{incidencia.inProcess}">En Proceso</button>
                             </form>
                         </td>
 
                         <td>
                             <form th:action="@{/incidencia/terminar/{id} (id=${incidencia.id})}" method="post">
-                                <button type="submit" class="btn btn-primary">Terminada</button>
+                                <button type="submit" class="btn btn-primary" th:text="#{incidencia.finished}">Terminada</button>
                             </form>
                         </td>
 
@@ -65,8 +64,6 @@
 
         </div>
     </div>
-
-
 
 
 

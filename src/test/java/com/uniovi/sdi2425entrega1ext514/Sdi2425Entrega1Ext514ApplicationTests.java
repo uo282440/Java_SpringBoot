@@ -845,8 +845,8 @@ sistema.
 
 
 	/**
-	 * [Prueba36] Registro de fin de trayecto inválido (no hay trayectos en curso).Se asume que el usuario "userNoActive"
-	 * no tiene un trayecto activo.
+	 * Prueba37] Mostrar el listado de trayectos y comprobar que se muestran todos los realizados por el
+	 * vehículo con la matrícula seleccionada.
 	 */
 	@Test
 	@Order(37)
@@ -862,10 +862,12 @@ sistema.
 		link.click();
 
 		// Espera a que cargue el título de la página
-		SeleniumUtils.waitLoadElementsBy(driver, "free", "//h2[contains(text(),'Trayectos')]", 10);
+		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[contains(@class,'btn') and contains(text(),'Historial')]", 10);
 
-		SeleniumUtils.waitLoadElementsBy(driver, "free", "//a[contains(text(),'Historial')]", 10);
-		WebElement link2 = driver.findElement(By.xpath("//a[contains(text(),'Historial')]"));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement link2 = wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//a[contains(@class,'btn') and contains(text(),'Historial')]"))
+		);
 		link2.click();
 
 

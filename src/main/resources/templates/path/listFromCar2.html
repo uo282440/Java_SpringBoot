@@ -7,7 +7,7 @@
 <div class="container">
 
 
-    <h2>Trayectos por Vehiculo</h2>
+    <h2 th:text="#{path.byVehicle}">Trayectos por Vehiculo</h2>
 
 
     <div id="refuelsTableContainer">
@@ -17,10 +17,10 @@
                 <thead>
 
                     <tr>
-                        <th scope="col" >Fecha Inicio</th>
-                        <th scope="col" >Conductor</th>
-                        <th scope="col" >Duracion</th>
-                        <th scope="col" >Kilometros</th>
+                        <th scope="col" th:text="#{path.date.initial}">Fecha Inicio</th>
+                        <th scope="col" th:text="#{driver}">Conductor</th>
+                        <th scope="col" th:text="#{path.duration.hours}">Duracion</th>
+                        <th scope="col" th:text="#{path.kilometers}">Kilometros</th>
 
                     </tr>
 
@@ -42,8 +42,6 @@
 
         </div>
     </div>
-
-
 
 
 </div>

@@ -6,9 +6,7 @@
 <nav th:replace="fragments/nav"/>
 <div class="container">
 
-
     <h2>Repostajes por Vehiculo</h2>
-
 
     <div id="refuelsTableContainer">
         <div th:if="${vehicles != null}">
@@ -17,8 +15,8 @@
                 <thead>
 
                     <tr>
-                        <th scope="col" >Matricula</th>
-                        <th scope="col" >Ver Repostajes</th>
+                        <th scope="col" th:text="#{vehicle.registration}">Matricula</th>
+                        <th scope="col" th:text="#{refuel.see}">Ver Repostajes</th>
 
                     </tr>
 
@@ -28,7 +26,9 @@
 
                     <tr th:each="vehicle : ${vehicles}">
                         <td th:text="${vehicle.getPlate()}"></td>
-                        <td> <a th:href="${'/refuel/vehicle/' + vehicle.getPlate()}" class="btn btn-primary">Historial</a> </td>
+                        <td>
+                            <a th:href="${'/refuel/vehicle/' + vehicle.getPlate()}" class="btn btn-primary" th:text="#{historial}">Historial</a>
+                        </td>
                     </tr>
 
                 </tbody>
@@ -36,8 +36,6 @@
 
         </div>
     </div>
-
-
 
 
 </div>

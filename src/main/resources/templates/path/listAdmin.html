@@ -5,7 +5,8 @@
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <h2>Trayectos</h2>
+
+    <h2 th:text="#{paths}">Trayectos</h2>
 
 
     <div>
@@ -20,7 +21,7 @@
                 </option>
             </select>
 
-            <button type="submit" class="btn btn-primary">Seleccionar</button>
+            <button type="submit" class="btn btn-primary" th:text="#{incidencia.select}">Seleccionar</button>
         </form>
     </div>
 
@@ -31,13 +32,13 @@
                 <thead>
 
                     <tr>
-                        <th scope="col" >Matricula</th>
-                        <th scope="col" >Fecha Inicio</th>
-                        <th scope="col" >Conductor</th>
-                        <th scope="col" >Kilometros</th>
-                        <th scope="col" >Odometro Inicial</th>
-                        <th scope="col" >Odometro Final</th>
-                        <th scope="col" >Editar</th>
+                        <th scope="col" th:text="#{vehicle.registration}">Matricula</th>
+                        <th scope="col" th:text="#{path.date.initial}">Fecha Inicio</th>
+                        <th scope="col" th:text="#{driver}">Conductor</th>
+                        <th scope="col" th:text="#{path.kilometers}">Kilometros</th>
+                        <th scope="col" th:text="#{path.odometer.initial}">Odometro Inicial</th>
+                        <th scope="col" th:text="#{path.odometer.final}">Odometro Final</th>
+                        <th scope="col" th:text="#{edit}">Editar</th>
                     </tr>
 
                 </thead>
@@ -51,7 +52,7 @@
                         <td th:text="${path.getKilometers()}"></td>
                         <td th:text="${path.getInitialOdometer()}"></td>
                         <td th:text="${path.getFinalOdometer()}"></td>
-                        <td> <a th:href="${'/path/edit/' + path.getId()}">Editar</a> </td>
+                        <td> <a th:href="${'/path/edit/' + path.getId()}" th:text="#{edit}">Editar</a> </td>
                     </tr>
 
                 </tbody>

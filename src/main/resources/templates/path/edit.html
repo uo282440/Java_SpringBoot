@@ -7,26 +7,26 @@
 
     <div class="container" id="main-container">
 
-        <h2>Editar Trayecto</h2>
+        <h2 th:text="#{path.edit}">Editar Trayecto</h2>
 
         <form class="form-horizontal" method="post" th:action="${'/path/edit/' + path.id}" th:object="${path}">
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="kilometers">Kilometros</label>
+                <label class="control-label col-sm-2" for="kilometers" th:text="#{path.kilometers}">Kilometros</label>
                 <div class="col-sm-10">
                     <input th:value="${path.kilometers}" id="kilometers" type="number" class="form-control" name="kilometers"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="initialOdometer">Odometro Inicial</label>
+                <label class="control-label col-sm-2" for="initialOdometer" th:text="#{path.odometer.initial}">Odometro Inicial</label>
                 <div class="col-sm-10">
                     <input th:value="${path.initialOdometer}" id="initialOdometer" type="number" class="form-control" name="initialOdometer"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="finalOdometer">Odometro Final</label>
+                <label class="control-label col-sm-2" for="finalOdometer" th:text="#{path.odometer.final}">Odometro Final</label>
                 <div class="col-sm-10">
                     <input th:value="${path.finalOdometer}" id="finalOdometer" type="number" class="form-control" name="finalOdometer"/>
                 </div>
@@ -34,7 +34,7 @@
 
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="startDate">Fecha inicio</label>
+                <label class="control-label col-sm-2" for="startDate" th:text="#{path.date.initial}">Fecha inicio</label>
                 <div class="col-sm-10">
                     <input th:value="${path.htmlFormattedStartDate}"
                            id="startDate" type="datetime-local" class="form-control" name="startDate"/>
@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="endDate">Fecha Final</label>
+                <label class="control-label col-sm-2" for="endDate" th:text="#{path.date.final}">Fecha Final</label>
                 <div class="col-sm-10">
                     <input th:value="${path.htmlFormattedEndDate}"
                            id="endDate" type="datetime-local" class="form-control" name="endDate"/>

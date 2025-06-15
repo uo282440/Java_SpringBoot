@@ -32,7 +32,7 @@ public class InsertSampleDataService {
     @PostConstruct
     public void init() {
 
-        //Añado usuarios de Prueba
+        //Añado usuarios
         User user1 = new User("99999990A", "Pedro", "Díaz");
         user1.setPassword("123456");
         user1.setRole(rolesService.getRoles()[0]);
@@ -166,7 +166,7 @@ public class InsertSampleDataService {
             }
         }
 
-        // Segundo: Asegurar que cada vehículo tenga al menos 15 trayectos
+        // Asegurar que cada vehículo tenga al menos 15 trayectos
         for (Vehicle vehicle : vehicles) {
             int currentPaths = pathService.getPathsByVehicle(vehicle.getPlate()).size();
             if (currentPaths < 15) {

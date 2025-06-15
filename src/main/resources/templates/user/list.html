@@ -34,9 +34,9 @@
 
                 <tbody>
                     <tr th:each="user : ${usersList}">
-                        <td th:text="${user.dni}">71888888X</td>
-                        <td th:text="${user.name}">Nombre del alumno</td>
-                        <td  th:text="${user.lastName}">Apellidos del alumno</td>
+                        <td th:text="${user.dni}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td  th:text="${user.lastName}"></td>
                         <td><a th:href="${'/user/edit/' + user.id}" th:text="#{modify}"></a></td>
                     </tr>
                 </tbody>

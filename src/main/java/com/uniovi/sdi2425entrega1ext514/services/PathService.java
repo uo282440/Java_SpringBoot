@@ -130,16 +130,14 @@ public class PathService {
      * @param path
      */
     public void endPath(Path path) {
-        // Recuperar desde la BD el path real
         Path dbPath = pathRepository.findById(path.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Trayecto no encontrado."));
 
-        // Actualizar campos, por ejemplo:
+        //actualizar campos
         dbPath.setFinalOdometer(path.getFinalOdometer());
         dbPath.setObservations(path.getObservations());
         dbPath.setEndDate(LocalDateTime.now());
 
-        // Guardar
         pathRepository.save(dbPath);
     }
 
@@ -167,6 +165,7 @@ public class PathService {
 
         //finalOdometer a 0 para indicar que el trayecto está activo.
         path.setFinalOdometer(0.0);
+
         pathRepository.save(path);
     }
 
@@ -197,7 +196,6 @@ public class PathService {
      * @return
      */
     public List<Path> getPathsByUserDni(String dni) {
-
         return pathRepository.getPathsByUserDni(dni);
     }
 

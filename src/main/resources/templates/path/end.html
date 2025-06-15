@@ -8,14 +8,14 @@
 
     <h2 th:text="#{Nav.paths.end}"></h2>
 
-    <!-- Se muestra información del trayecto activo -->
+
     <div>
         <p><strong th:text="#{vehicle}"></strong>: <span th:text="${activePath.vehicleRegistration}">Matrícula</span></p>
         <p><strong th:text="#{path.odometer.initial}"></strong>: <span th:text="${activePath.initialOdometer}">Odómetro</span></p>
 
     </div>
 
-    <!-- Formulario para finalizar trayecto -->
+
     <form th:action="@{/path/end}" th:object="${activePath}" method="post">
 
         <input type="hidden" th:field="*{id}" />
@@ -31,7 +31,6 @@
         </div>
 
 
-        <!-- Bloque para mostrar errores: se evalúa en el contexto del objeto "activePath" -->
         <div id="errorMessage" th:if="${#fields.hasErrors()}">
             <ul>
                 <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
@@ -40,7 +39,7 @@
         <button type="submit" class="btn" id="submitEndButton" th:text="#{Nav.paths.end}"></button>
     </form>
 
-    <!-- Mostrar errores, si existen -->
+
     <div th:if="${error != null}">
         <p th:text="${error}" style="color: red;"></p>
     </div>

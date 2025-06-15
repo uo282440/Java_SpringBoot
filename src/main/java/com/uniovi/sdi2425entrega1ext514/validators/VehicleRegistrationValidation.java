@@ -17,7 +17,6 @@ public class VehicleRegistrationValidation implements Validator {
         this.vehicleService = vehicleService;
     }
 
-
     @Override
     public boolean supports(Class<?> aClass) {
         return Vehicle.class.equals(aClass);

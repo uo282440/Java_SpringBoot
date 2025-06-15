@@ -23,27 +23,27 @@
         <table class="table table-hover" th:fragment="vehiclesTable" id="vehiclesTable">
 
             <thead>
-            <tr>
-                <th scope="col" >Estado</th>
-                <th scope="col" th:text="#{vehicle.registration}"></th>
-                <th scope="col" th:text="#{vehicle.brand}"></th>
-                <th scope="col" th:text="#{vehicle.model}"></th>
-                <th scope="col" th:text="#{vehicle.odometer}"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
+                <tr>
+                    <th scope="col" >Estado</th>
+                    <th scope="col" th:text="#{vehicle.registration}"></th>
+                    <th scope="col" th:text="#{vehicle.brand}"></th>
+                    <th scope="col" th:text="#{vehicle.model}"></th>
+                    <th scope="col" th:text="#{vehicle.odometer}"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
 
             <tbody>
-            <tr th:each="vehicle : ${vehicles}">
-                <td th:text="${vehicle.isFree} ? 'LIBRE' : 'OCUPADO'"></td>
-                <td th:text="${vehicle.plate}"></td>
-                <td th:text="${vehicle.brandName}"></td>
-                <td th:text="${vehicle.model}"></td>
-                <td th:text="${vehicle.odometer}"></td>
-                <td><a th:href="${'/vehicle/refuels/' + vehicle.id}" th:text="#{refuels}">refuels</a></td>
-                <td><a th:href="${'/path/vehicle/' + vehicle.getPlate()}" th:text="#{paths}">paths</a></td>
-            </tr>
+                <tr th:each="vehicle : ${vehicles}">
+                    <td th:text="${vehicle.isFree} ? 'LIBRE' : 'OCUPADO'"></td>
+                    <td th:text="${vehicle.plate}"></td>
+                    <td th:text="${vehicle.brandName}"></td>
+                    <td th:text="${vehicle.model}"></td>
+                    <td th:text="${vehicle.odometer}"></td>
+                    <td><a th:href="${'/vehicle/refuels/' + vehicle.id}" th:text="#{refuels}">refuels</a></td>
+                    <td><a th:href="${'/path/vehicle/' + vehicle.getPlate()}" th:text="#{paths}">paths</a></td>
+                </tr>
             </tbody>
 
         </table>

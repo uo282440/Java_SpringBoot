@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 @Entity
 public class Incidencia {
 
-
     @Id
     @GeneratedValue
     private Long id;
@@ -19,7 +18,6 @@ public class Incidencia {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     private String description;
     private String title;
 
@@ -30,7 +28,6 @@ public class Incidencia {
     private String state;
 
     private LocalDateTime date;
-
 
 
     public Incidencia() {}

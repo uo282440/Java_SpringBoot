@@ -22,6 +22,12 @@ public class LogsController {
         this.logService = logService;
     }
 
+    /**
+     * Metodo GET que renderiza el listado de logs
+     * @param type
+     * @param model
+     * @return
+     */
     @RequestMapping("/logs")
     public String logs(@RequestParam(value = "type", required = false) String type, Model model) {
         List<LogEntry> logs;
@@ -43,6 +49,11 @@ public class LogsController {
         return "logs/list";
     }
 
+    /**
+     * Metodo POST utilizado para eliminar logs del sistema
+     * @param type
+     * @return
+     */
     @PostMapping("/logs/delete")
     public String deleteLogs(@RequestParam(value = "type", required = false) String type) {
         if (type != null && !type.isEmpty()) {
@@ -53,6 +64,10 @@ public class LogsController {
         return "redirect:/logs" + (type != null ? "?type=" + type : "");
     }
 
+    /**
+     * Metodo que nos devuelve la identificacion del usuario en sesion, utilizado para añadir logs
+     * @return
+     */
     private String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();

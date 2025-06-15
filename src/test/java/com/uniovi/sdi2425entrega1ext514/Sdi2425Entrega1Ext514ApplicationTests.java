@@ -615,8 +615,7 @@ sistema.
 			WebElement welcomeMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
 					By.xpath("//*[contains(text(), '1111ZZZ')]")
 			));
-
-		} catch (Exception e) { //porque NO deberia aparecer
+		} catch (Exception e) { //no deberia aparecer
 			condicion = true;
 		}
 

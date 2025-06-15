@@ -9,44 +9,37 @@
     <h2 th:text="#{incidencia.title.plural}">Incidencias</h2>
 
 
-
     <div id="incidenciasTableContainer">
         <div th:if="${incidencias != null}">
 
             <table class="table table-hover">
                 <thead>
 
-                <tr>
-                    <th scope="col" th:text="#{incidencia.date}">Fecha y Hora</th>
-                    <th scope="col" th:text="#{incidencia.param.title}">Titulo</th>
-                    <th scope="col" th:text="#{incidencia.employee}">Empleado</th>
-                    <th scope="col" th:text="#{incidencia.state}">Estado</th>
-                    <th scope="col" th:text="#{details}">Detalles</th>
+                    <tr>
+                        <th scope="col" th:text="#{incidencia.date}">Fecha y Hora</th>
+                        <th scope="col" th:text="#{incidencia.param.title}">Titulo</th>
+                        <th scope="col" th:text="#{incidencia.employee}">Empleado</th>
+                        <th scope="col" th:text="#{incidencia.state}">Estado</th>
+                        <th scope="col" th:text="#{details}">Detalles</th>
 
-                </tr>
+                    </tr>
                 </thead>
 
                 <tbody>
+                    <tr th:each="inci : ${incidencias}">
+                        <td th:text="${inci.getDate()}"></td>
+                        <td th:text="${inci.getTitle()}"></td>
+                        <td th:text="${inci.getUser().getFullName()}"></td>
+                        <td th:text="${inci.getState()}"></td>
 
-                <tr th:each="inci : ${incidencias}">
-                    <td th:text="${inci.getDate()}"></td>
-                    <td th:text="${inci.getTitle()}"></td>
-                    <td th:text="${inci.getUser().getFullName()}"></td>
-                    <td th:text="${inci.getState()}"></td>
+                        <td><a th:href="${'/incidencia/listDetails/' + inci.id}" th:text="#{modify}"></a></td>
 
-                    <td><a th:href="${'/incidencia/listDetails/' + inci.id}" th:text="#{modify}"></a></td>
-
-
-                </tr>
+                    </tr>
                 </tbody>
             </table>
 
         </div>
     </div>
-
-
-
-
 
 </div>
 <footer th:replace="fragments/footer"/>

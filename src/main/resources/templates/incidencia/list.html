@@ -29,29 +29,27 @@
 
             <table class="table table-hover">
                 <thead>
+                    <tr>
+                        <th scope="col" th:text="#{vehicle}">Vehiculo </th>
+                        <th scope="col" th:text="#{incidencia.param.title}">Titulo</th>
+                        <th scope="col" th:text="#{incidencia.param.description}">Descripcion</th>
+                        <th scope="col" th:text="#{incidencia.param.requiresResponse}">Requiere Respuesta</th>
+                        <th scope="col" th:text="#{incidencia.param.response}">Respuesta</th>
+                        <th scope="col" th:text="#{incidencia.state}">Estado</th>
 
-                <tr>
-                    <th scope="col" th:text="#{vehicle}">Vehiculo </th>
-                    <th scope="col" th:text="#{incidencia.param.title}">Titulo</th>
-                    <th scope="col" th:text="#{incidencia.param.description}">Descripcion</th>
-                    <th scope="col" th:text="#{incidencia.param.requiresResponse}">Requiere Respuesta</th>
-                    <th scope="col" th:text="#{incidencia.param.response}">Respuesta</th>
-                    <th scope="col" th:text="#{incidencia.state}">Estado</th>
-
-                </tr>
+                    </tr>
                 </thead>
 
                 <tbody>
+                    <tr th:each="inci : ${incidencias}">
+                        <td th:text="${inci.getVehicle().getPlate()}"></td>
+                        <td th:text="${inci.getTitle()}"></td>
+                        <td th:text="${inci.getDescription()}"></td>
+                        <td th:text="${inci.getRequiresResponse()}"></td>
+                        <td th:text="${inci.getResponse()}"></td>
+                        <td th:text="${inci.getState()}"></td>
 
-                <tr th:each="inci : ${incidencias}">
-                    <td th:text="${inci.getVehicle().getPlate()}"></td>
-                    <td th:text="${inci.getTitle()}"></td>
-                    <td th:text="${inci.getDescription()}"></td>
-                    <td th:text="${inci.getRequiresResponse()}"></td>
-                    <td th:text="${inci.getResponse()}"></td>
-                    <td th:text="${inci.getState()}"></td>
-
-                </tr>
+                    </tr>
                 </tbody>
             </table>
 

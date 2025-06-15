@@ -45,18 +45,30 @@ public class UsersController {
         this.logService = logService;
     }
 
+    /**
+     * Metodo para la identificacion del usuario que está en sesion, utilizado para los logs
+     * @return
+     */
     private String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
 
-
+    /**
+     * Metodo GET que renderiza en html del login
+     * @return
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
-
         return "user/login";
     }
 
+    /**
+     * Metodo GET que renderiza el html de listar usuarios
+     * @param model
+     * @param pageable
+     * @return
+     */
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
     public String listUsers(Model model, Pageable pageable) {
 
@@ -69,12 +81,15 @@ public class UsersController {
         return "user/list";
     }
 
+    /**
+     * Metodo GET que renderiza el html de registar usuarios
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
     public String register(Model model) {
 
         User user = new User();
-
-
 
         user.setPassword(usersService.generateUserPassword());
         model.addAttribute("user", user);
@@ -82,6 +97,12 @@ public class UsersController {
         return "user/register";
     }
 
+    /**
+     * Metodo POST para registrar usuarios
+     * @param user
+     * @param result
+     * @return
+     */
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public String register(@Validated User user, BindingResult result) {
 
@@ -101,6 +122,12 @@ public class UsersController {
     }
 
 
+    /**
+     * Metodo GET que renderiza el html para editar usuarios
+     * @param model
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/user/edit/{id}",  method = RequestMethod.GET)
     public String edit(Model model, @PathVariable Long id) {
 
@@ -112,6 +139,15 @@ public class UsersController {
         return "user/edit";
     }
 
+
+    /**
+     * Metodo POST que permite editar un usuario
+     * @param id
+     * @param user
+     * @param result
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
     public String edit(@PathVariable Long id, @ModelAttribute User user, BindingResult result, Model model) {
 
@@ -133,6 +169,13 @@ public class UsersController {
     }
 
 
+    /**
+     * Metodo POST que nos permite modificar la contraseña de un usuario
+     * @param user
+     * @param principal
+     * @param result
+     * @return
+     */
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public String changePassword(@Validated User user, Principal principal, BindingResult result) {
 
@@ -151,6 +194,12 @@ public class UsersController {
         return "redirect:/home";
     }
 
+
+    /**
+     * Metodo GET que renderiza el html para cambiar la contraseña de un usuario
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
     public String changePassword(Model model) {
 
@@ -159,6 +208,12 @@ public class UsersController {
         return "user/passwordChange";
     }
 
+
+    /**
+     * Metodo GET que renderia el html de home
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String goHome(Model model) {
 
@@ -173,7 +228,6 @@ public class UsersController {
 
         return "home";
     }
-
 
 
 }

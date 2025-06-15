@@ -87,7 +87,7 @@ public class RefuelService {
 
 
     /**
-     * Devuelve los repostajes segun el vehiculo
+     * Devuelve los repostajes segun el vehiculo, con paginacion
      * @param plate
      * @return
      */
@@ -97,6 +97,11 @@ public class RefuelService {
     }
 
 
+    /**
+     * Devuelve los repostajes segun el vehiculo, sin paginacion
+     * @param plate
+     * @return
+     */
     public List<Refuel> getRefulsByVehicle(String plate) {
         List<Refuel> result = refuelRepository.getRefulsByVehicle(plate);
         return result;

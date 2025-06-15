@@ -22,18 +22,15 @@ public class EndTripValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Path path = (Path) target;
 
-        // 1. Comprobar que se ha indicado el ID del trayecto
         if (path.getId() == null) {
             errors.reject("path.id.required", "No se ha indicado el trayecto a finalizar.");
             return;
         }
 
-        // 4. Ver si hay un error de conversión en finalConsumption (por ejemplo, campo vacío o texto no numérico)
         if (errors.hasFieldErrors("finalOdometer")) {
-            // Con esto evitamos hacer más validaciones; el error de conversión ya está registrado
+
             return;
         }
-
 
     }
 

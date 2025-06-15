@@ -21,7 +21,7 @@
             </select>
         </div>
 
-        <!-- Bloque de errores movido dentro del formulario -->
+
         <div th:if="${#fields.hasErrors('*')}">
             <ul>
                 <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>

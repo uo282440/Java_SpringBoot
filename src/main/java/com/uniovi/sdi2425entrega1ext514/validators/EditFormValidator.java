@@ -30,6 +30,7 @@ public class EditFormValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+
         User user = (User) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dni", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "Error.empty");

@@ -158,6 +158,43 @@ public class PO_PrivateView extends PO_NavView {
         driver.findElement(button).click();
     }
 
+    static public void fillFormEditPath(WebDriver driver, String kilometrosp, String odometroInicialp, String odometroFinalp, boolean esPruebaDeFecha) {
+
+        SeleniumUtils.waitSeconds(driver, 5);
+        WebElement kilometers = driver.findElement(By.name("kilometers"));
+        kilometers.clear();
+        kilometers.sendKeys(kilometrosp);
+
+        WebElement initialOdometer = driver.findElement(By.name("initialOdometer"));
+        initialOdometer.click();
+        initialOdometer.clear();
+        initialOdometer.sendKeys(odometroInicialp);
+
+        WebElement finalOdometer = driver.findElement(By.name("finalOdometer"));
+        finalOdometer.click();
+        finalOdometer.clear();
+        finalOdometer.sendKeys(odometroFinalp);
+
+
+
+        //rellenamos la fecha con el 1 de diciembre de 2025
+        String fechaFija = "2025-12-01T00:00";
+
+        if (esPruebaDeFecha) { //test 58
+            String fecha = "4035-12-01T00:00";
+            WebElement startDate = driver.findElement(By.name("startDate"));
+            startDate.clear();
+            startDate.sendKeys(fecha);
+        }
+
+        WebElement endDate = driver.findElement(By.name("endDate"));
+        endDate.clear();
+        endDate.sendKeys(fechaFija);
+
+        By button = By.className("btn");
+        driver.findElement(button).click();
+    }
+
 
     static private void fillFormChangaPassword(WebDriver driver, String oldPasswordp, String newPasswordp,
                                                String passwordConfirmp) {

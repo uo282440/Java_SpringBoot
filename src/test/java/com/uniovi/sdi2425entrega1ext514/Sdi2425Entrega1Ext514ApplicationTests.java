@@ -1417,6 +1417,74 @@ sistema.
 		assertTrue(textoPresente3);
 	}
 
+	/**
+	 * [Prueba57] Editar el trayecto con valores correctos
+	 */
+	@Test
+	@Order(57)
+	void Prueba57() throws InterruptedException {
+
+		PO_LoginView.login(driver, "66666666Q", "123456");
+
+		//vamos al formulario de edicion de un vehiculo
+		driver.navigate().to("http://localhost:8100/path/edit/32");
+
+		PO_PrivateView.fillFormEditPath(driver,"200", "2022","2222", false);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/path/listAdmin");
+	}
+
+	/**
+	 * [Prueba58] Editar el trayecto con valores incorrectos (fecha de inicio posterior al fin)
+	 */
+	@Test
+	@Order(58)
+	void Prueba58() throws InterruptedException {
+
+		PO_LoginView.login(driver, "66666666Q", "123456");
+
+		//vamos al formulario de edicion de un vehiculo
+		driver.navigate().to("http://localhost:8100/path/edit/32");
+
+		PO_PrivateView.fillFormEditPath(driver,"200", "2022","2222", true);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/path/edit/32");
+	}
+
+	/**
+	 * [Prueba59] Editar el trayecto con valores incorrectos (odómetro de inicio superior al de fin)
+	 */
+	@Test
+	@Order(59)
+	void Prueba59() throws InterruptedException {
+
+		PO_LoginView.login(driver, "66666666Q", "123456");
+
+		//vamos al formulario de edicion de un vehiculo
+		driver.navigate().to("http://localhost:8100/path/edit/32");
+
+		PO_PrivateView.fillFormEditPath(driver,"200", "2222","2022", false);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/path/edit/32");;
+	}
+
+	/**
+	 * [Prueba60] Editar el trayecto con valores incorrectos (odómetros negativos)
+	 */
+	@Test
+	@Order(60)
+	void Prueba60() throws InterruptedException {
+
+		PO_LoginView.login(driver, "66666666Q", "123456");
+
+		//vamos al formulario de edicion de un vehiculo
+		driver.navigate().to("http://localhost:8100/path/edit/32");
+
+		PO_PrivateView.fillFormEditPath(driver,"200", "-1","-222", false);
+
+		assertEquals(driver.getCurrentUrl(), "http://localhost:8100/path/edit/32");
+	}
+
 
 
 }

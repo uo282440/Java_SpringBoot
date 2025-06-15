@@ -1,0 +1,69 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    <h2>Trayectos</h2>
+
+
+    <div>
+        <form th:action="@{/path/show}" method="get">
+
+            <label for="vehiclesPlates" th:text="#{vehicle.available}">Vehículos:</label>
+
+            <select id="vehiclesPlates" name="plate">
+                <option th:each="vehicle : ${vehicles}"
+                            th:value="${vehicle.plate}"
+                            th:text="${vehicle.plate}">
+                </option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Seleccionar</button>
+        </form>
+    </div>
+
+    <div id="refuelsTableContainer">
+        <div th:if="${pathsList != null}">
+
+            <table class="table table-hover">
+                <thead>
+
+                    <tr>
+                        <th scope="col" >Matricula</th>
+                        <th scope="col" >Fecha Inicio</th>
+                        <th scope="col" >Conductor</th>
+                        <th scope="col" >Kilometros</th>
+                        <th scope="col" >Odometro Inicial</th>
+                        <th scope="col" >Odometro Final</th>
+                        <th scope="col" >Editar</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="path : ${pathsList}">
+                        <td th:text="${path.getVehicleRegistration()}"></td>
+                        <td th:text="${path.getStartDate()}"></td>
+                        <td th:text="${path.getUser().getFullName()}"></td>
+                        <td th:text="${path.getKilometers()}"></td>
+                        <td th:text="${path.getInitialOdometer()}"></td>
+                        <td th:text="${path.getFinalOdometer()}"></td>
+                        <td> <a th:href="${'/path/edit/' + path.getId()}">Editar</a> </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
+
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

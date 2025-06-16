@@ -28,9 +28,12 @@ public class PO_PrivateView extends PO_NavView {
     static public void registerUserError(WebDriver driver, String dnip, String namep, String lastNamep,
                                          String expectedError) {
         goToUserLink(driver, "register");
-        //Ahora vamos a rellenar los datos del usuario
+
+
+        // rellenamos los datos del usuario
         fillFormRegisterUser(driver, dnip, namep, lastNamep);
         List<WebElement> elements = PO_View.checkElementBy(driver, "text", expectedError);
+
         Assertions.assertTrue(elements.getFirst().getText().contains(expectedError));
     }
 

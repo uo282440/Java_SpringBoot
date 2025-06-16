@@ -1212,7 +1212,6 @@ sistema.
 
 		// Esperar a que la tabla esté visible
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		//wait.until(ExpectedConditions.presenceOfElementLocated(By.id("logsTable")));
 
 		// Obtener las filas de la tabla
 		WebElement table = driver.findElement(By.id("logsTable"));
@@ -1220,7 +1219,6 @@ sistema.
 		// Encuentra todas las filas dentro del tbody
 		List<WebElement> rows = table.findElements(By.cssSelector("tbody tr"));
 
-		// Verifica que haya exactamente 5 filas
 		Assertions.assertEquals(true, rows.size() <= 2 );
 
 

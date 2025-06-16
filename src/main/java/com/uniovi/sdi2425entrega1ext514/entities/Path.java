@@ -90,17 +90,7 @@ public class Path {
         return startDate;
     }
 
-    /*
-    public String getOnlyDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(getStartDate());
-    }
 
-    public String getOnlyTime() {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-        return timeFormat.format(getStartDate());
-    }
-     */
     public String getOnlyDate() {
         return startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }

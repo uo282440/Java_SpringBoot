@@ -41,7 +41,7 @@
                     <td th:text="${vehicle.brandName}"></td>
                     <td th:text="${vehicle.model}"></td>
                     <td th:text="${vehicle.odometer}"></td>
-                    <td><a th:href="${'/vehicle/refuels/' + vehicle.id}" th:text="#{refuels}">refuels</a></td>
+                    <td><a th:href="${'/refuel/vehicle/' + vehicle.getPlate()}" th:text="#{refuels}">refuels</a></td>
                     <td><a th:href="${'/path/vehicle/' + vehicle.getPlate()}" th:text="#{paths}">paths</a></td>
                 </tr>
             </tbody>
